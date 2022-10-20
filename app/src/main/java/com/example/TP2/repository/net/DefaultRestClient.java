@@ -13,8 +13,11 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.annotations.Nullable;
 
 public class DefaultRestClient implements RestClient, Callable<String> {
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
@@ -44,68 +47,54 @@ public class DefaultRestClient implements RestClient, Callable<String> {
     }
 
     @Override
-    public Response get(Context ctx, String url) throws IOException, NetworkConnectionException {
+    public Response get(Context ctx, String url, @Nullable Map<String, String> headers) throws IOException, NetworkConnectionException {
         if (noInternetConnection(ctx)) {
             throw new NetworkConnectionException();
         }
 
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON)
-                .get()
-                .build();
+        Request.Builder requestBuilder =  new Request.Builder().url(url).get();
+        setHeaders(requestBuilder, headers);
 
-        return okHttpClient.newCall(request).execute();
+        return okHttpClient.newCall(requestBuilder.build()).execute();
     }
 
     @Override
-    public Response post(Context ctx, String url, String body) throws IOException, NetworkConnectionException {
+    public Response post(Context ctx, String url, String body, @Nullable Map<String, String> headers) throws IOException, NetworkConnectionException {
         if (noInternetConnection(ctx)) {
             throw new NetworkConnectionException();
         }
 
         RequestBody requestBody = RequestBody.create(JSON, body);
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON)
-                .post(requestBody)
-                .build();
+        Request.Builder requestBuilder =  new Request.Builder().url(url).post(requestBody);
+        setHeaders(requestBuilder, headers);
 
-        return okHttpClient.newCall(request).execute();
+        return okHttpClient.newCall(requestBuilder.build()).execute();
     }
 
     @Override
-    public Response put(Context ctx, String url, String body) throws IOException, NetworkConnectionException {
+    public Response put(Context ctx, String url, String body, @Nullable Map<String, String> headers) throws IOException, NetworkConnectionException {
         if (noInternetConnection(ctx)) {
             throw new NetworkConnectionException();
         }
 
         RequestBody requestBody = RequestBody.create(JSON, body);
+        Request.Builder requestBuilder =  new Request.Builder().url(url).put(requestBody);
+        setHeaders(requestBuilder, headers);
 
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON)
-                .put(requestBody)
-                .build();
-
-        return okHttpClient.newCall(request).execute();
+        return okHttpClient.newCall(requestBuilder.build()).execute();
     }
 
     @Override
-    public Response patch(Context ctx, String url, String body) throws IOException, NetworkConnectionException {
+    public Response patch(Context ctx, String url, String body, @Nullable Map<String, String> headers) throws IOException, NetworkConnectionException {
         if (noInternetConnection(ctx)) {
             throw new NetworkConnectionException();
         }
 
         RequestBody requestBody = RequestBody.create(JSON, body);
+        Request.Builder requestBuilder =  new Request.Builder().url(url).patch(requestBody);
+        setHeaders(requestBuilder, headers);
 
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON)
-                .patch(requestBody)
-                .build();
-
-        return okHttpClient.newCall(request).execute();
+        return okHttpClient.newCall(requestBuilder.build()).execute();
     }
 
     /**
@@ -122,6 +111,18 @@ public class DefaultRestClient implements RestClient, Callable<String> {
         isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
 
         return !isConnected;
+    }
+
+    private void setHeaders(Request.Builder requestBuilder, @Nullable Map<String, String> headers) {
+        requestBuilder.addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON);
+
+        if (headers == null) {
+            return;
+        }
+
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+            requestBuilder.addHeader(header.getKey(), header.getValue());
+        }
     }
 
 }
