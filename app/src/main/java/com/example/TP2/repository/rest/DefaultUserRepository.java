@@ -1,4 +1,4 @@
-package com.example.TP2.repository;
+package com.example.TP2.repository.rest;
 
 import android.content.Context;
 
@@ -9,8 +9,8 @@ import com.example.TP2.entity.RegisterUserResponse;
 import com.example.TP2.entity.mapper.LoginUserResponseJsonMapper;
 import com.example.TP2.entity.mapper.RegisterUserResponseJsonMapper;
 import com.example.TP2.repository.exception.NetworkConnectionException;
-import com.example.TP2.repository.net.DefaultRestClient;
-import com.example.TP2.repository.net.RestClient;
+import com.example.TP2.repository.rest.restclient.DefaultRestClient;
+import com.example.TP2.repository.rest.restclient.RestClient;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;

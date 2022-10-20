@@ -3,8 +3,8 @@ package com.example.TP2.usecase;
 import android.content.Context;
 
 import com.example.TP2.entity.DollarEntity;
-import com.example.TP2.repository.DefaultDollarRepository;
-import com.example.TP2.repository.DollarRepository;
+import com.example.TP2.repository.rest.DefaultDollarRepository;
+import com.example.TP2.repository.rest.DollarRepository;
 
 import java.util.ArrayList;
 import java.util.List;

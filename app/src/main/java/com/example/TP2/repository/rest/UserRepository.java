@@ -1,4 +1,4 @@
-package com.example.TP2.repository;
+package com.example.TP2.repository.rest;
 
 import android.content.Context;
 

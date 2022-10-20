@@ -3,8 +3,8 @@ package com.example.TP2.model;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.TP2.repository.DefaultDollarRepository;
-import com.example.TP2.repository.DollarRepository;
+import com.example.TP2.repository.rest.DefaultDollarRepository;
+import com.example.TP2.repository.rest.DollarRepository;
 import com.example.TP2.usecase.GetDollarList;
 
 import io.reactivex.Observable;

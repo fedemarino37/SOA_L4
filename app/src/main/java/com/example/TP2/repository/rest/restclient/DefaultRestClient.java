@@ -1,4 +1,4 @@
-package com.example.TP2.repository.net;
+package com.example.TP2.repository.rest.restclient;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
