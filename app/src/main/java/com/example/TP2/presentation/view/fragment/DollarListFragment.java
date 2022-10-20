@@ -2,8 +2,11 @@ package com.example.TP2.presentation.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.example.TP2.presentation.internal.di.components.DollarComponent;
 import com.example.TP2.presentation.model.DollarModel;
 import com.example.TP2.presentation.presenter.DollarListPresenter;
 import com.example.TP2.presentation.view.DollarListView;
@@ -21,6 +24,8 @@ public class DollarListFragment extends BaseFragment implements DollarListView {
     @Inject DollarListPresenter dollarListPresenter;
     //@Inject DollarA usersAdapter;
 
+
+
     private DollarListListener dollarListListener;
 
 
@@ -33,13 +38,28 @@ public class DollarListFragment extends BaseFragment implements DollarListView {
 
     }
 
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.getComponent(DollarComponent.class).inject(this);
+    }
+
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        /*final View fragmentView = inflater.inflate(R.layout.fragment_user_list, container, false);
+        ButterKnife.bind(this, fragmentView);
+        setupRecyclerView();
+        return fragmentView;*/
+        return null;
+    }
+
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*this.dollarListPresenter.setView(this);
+        this.dollarListPresenter.setView(this);
         if (savedInstanceState == null) {
             this.loadDollarList();
-        }*/
+        }
     }
+
+
 
     @Override
     public void showLoading() {
@@ -75,6 +95,6 @@ public class DollarListFragment extends BaseFragment implements DollarListView {
      * Loads all users.
      */
     private void loadDollarList() {
-        //this.dollarListPresenter.initialize();
+        this.dollarListPresenter.initialize();
     }
 }
