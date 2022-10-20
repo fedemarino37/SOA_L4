@@ -1,6 +1,4 @@
-package com.example.TP2;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.TP2.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.TP2.R;
 
 public class DialogActivity extends AppCompatActivity {
 

@@ -1,6 +1,4 @@
-package com.example.TP2;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.TP2.view;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -13,10 +11,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements Contract.ViewMVP {
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.TP2.R;
+import com.example.TP2.presenter.Presenter;
+import com.example.TP2.presenter.PresenterMVP;
+
+public class MainActivity extends AppCompatActivity implements ViewMVP {
 
     private TextView textView;
-    private Contract.PresenterMVP presenter;
+    private PresenterMVP presenter;
     private AlertDialog.Builder builder;
     private static final String TAG = "MainActivity";
 
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements Contract.ViewMVP 
             Intent intent;
             switch (view.getId()) {
                 case R.id.button:
-                    presenter.onButtonClick();
+                    presenter.onButtonClick(getApplicationContext());
                     break;
                 case R.id.button_dialog:
                     //se genera un Intent para poder lanzar la activity principal
