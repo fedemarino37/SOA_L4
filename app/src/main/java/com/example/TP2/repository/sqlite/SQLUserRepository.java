@@ -11,4 +11,5 @@ public interface SQLUserRepository {
 
     SQLUserEntity getUserData(Context ctx, String userEmail);
     boolean saveUserHistory(Context ctx, SQLUserEntity user);
+    boolean insertNewUser(Context ctx, SQLUserEntity newUser);
 }

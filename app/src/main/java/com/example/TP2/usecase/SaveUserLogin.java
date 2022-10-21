@@ -19,6 +19,7 @@ public class SaveUserLogin {
     public SaveUserLogin(String userEmail) {
         sql = new DefaultSQLUserRepository();
         this.userEmail = userEmail;
+        // Como no se puede recibir por parametro en execute, lo hago atributo.
     }
 
     public Observable<Object> execute(Context ctx) {
@@ -28,8 +29,13 @@ public class SaveUserLogin {
             String currentDateAndTime = sdf.format(new Date());
 
             SQLUserEntity sqlUserEntity = sql.getUserData(ctx, this.userEmail);
+            /* REcibo el mail y tengo que registrar el nombre y apellido, busco en la BD
+            *   el nombre y ap a partir del mail recibido. */
             sqlUserEntity.setTimeStampLastAccess(currentDateAndTime.toString());
+            // A esos datos, les seteo la fecha y hora de acceso (como string).
 
+            // Todo: REVISAR ESTO: No estoy seguro de que deberia devolver esto.
+            /*  El metodo devuelve un boolean indicando si fue existoso o no la operacion.*/
             emitter.onNext(sql.saveUserHistory(ctx,sqlUserEntity));
         });
     }
@@ -39,13 +45,4 @@ public class SaveUserLogin {
             emitter.onNext(execute(ctx));
         });
     }
-
-    // Todo: crear atributo de SQL user Repository
-    // Todo: Crear constructor e instanciar el atributo de SQLUserR
-    // Todo: crear metodo execute. El mismo debe recibir el parametro context y email
-    //  Crear entidad SQL user entity y setearle el timestamp.
-    // Todo:  crear metodo execute with observable
-
-
-
 }

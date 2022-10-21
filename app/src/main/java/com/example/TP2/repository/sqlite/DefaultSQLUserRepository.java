@@ -26,10 +26,6 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
     private static final String LAST_ACCESS = "LastAccess";
     private static final String EMAIL = "Email";
 
-
-
-
-
     public DefaultSQLUserRepository() {}
 
 
@@ -70,10 +66,16 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         return user;
     }
 
-    // Todo: Hacer saveUserHistorty: crear una entrada en la tabla, con el usuario del parametro.
+
     public boolean saveUserHistory(Context ctx, SQLUserEntity user) {
         this.sql = ctx.openOrCreateDatabase(DB_NAME, ctx.MODE_PRIVATE, null);
         this.sql.rawQuery(createIfNotExistsUSERSHISTORY(),null);
+        /*
+        *   Se elimino el metodo open connection.
+        *       Antes: Dado un contexto, abria la conexion con la BD, y creaba o abria una unica tabla.
+        *       Ahora: Se estan usando dos tablas, en contextos diferentes.
+        * */
+
 
         ContentValues cv = new ContentValues();
         cv.put(NAME, user.getName());
@@ -81,6 +83,18 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         cv.put(LAST_ACCESS, user.getTimeStampLastAccess());
 
         return this.sql.insert(USER_HISTORY_TABLE,null,cv) > 0;
+    }
+
+    public boolean insertNewUser(Context ctx, SQLUserEntity newUser) {
+        this.sql = ctx.openOrCreateDatabase(DB_NAME, ctx.MODE_PRIVATE, null);
+        this.sql.rawQuery(createIfNotExistsUSERS(),null);
+
+        ContentValues cv = new ContentValues();
+        cv.put(NAME, newUser.getName());
+        cv.put(LAST_NAME, newUser.getLastName());
+        cv.put(EMAIL, newUser.getEmail());
+
+        return this.sql.insert(USERS_TABLE,null,cv) > 0;
     }
 
     private String selectUserFromWhere(String usersTable, String userEmail) {

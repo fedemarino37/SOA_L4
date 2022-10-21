@@ -28,8 +28,8 @@ public class LoginUser {
         LoginUserResponse loginUserResponse = userRepository.loginUser(ctx, loginUserRequest);
         sharedPreferencesRepository.saveToken(ctx, loginUserResponse.getToken());
 
-        // Todo: Enviar email al caso de uso SaveUserLogin, invocando execute.
-        //      loginUserRequest.getEmail() para enviar el email.
+        /* Paso el mail al constructor para mantener que el execute solo reciba ctx.
+          Ademas, en Model, la funcion trabaja solo con context.    */
         SaveUserLogin saveUserLogin = new SaveUserLogin(loginUserRequest.getEmail());
         saveUserLogin.execute(ctx);
 
