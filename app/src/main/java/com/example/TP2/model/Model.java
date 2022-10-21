@@ -23,7 +23,7 @@ public class Model implements ModelMVP {
 
     @Override
     public void sendMessage(Context ctx, OnSendToPresenter presenter) {
-            Observable<Object> dollarEntity = getDollarList.execute(ctx);
+            Observable<Object> dollarEntity = getDollarList.executeWithObservable(ctx);
             dollarEntity.subscribe(new Observer<Object>() {
                 @Override
                 public void onSubscribe(Disposable d) {
@@ -46,6 +46,8 @@ public class Model implements ModelMVP {
 
                 }
             });
+
+
 
         //presenter.onFinished("MENSAJE AL PRESENTADOR");
     }
