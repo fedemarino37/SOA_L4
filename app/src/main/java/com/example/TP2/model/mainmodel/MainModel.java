@@ -1,8 +1,8 @@
-package com.example.TP2.model;
+package com.example.TP2.model.mainmodel;
 
 import android.content.Context;
 
-public interface ModelMVP {
+public interface MainModel {
     interface OnSendToPresenter{
         void onFinished(String string);
     }

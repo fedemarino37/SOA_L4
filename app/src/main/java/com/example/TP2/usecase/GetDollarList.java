@@ -3,9 +3,11 @@ package com.example.TP2.usecase;
 import android.content.Context;
 
 import com.example.TP2.entity.DollarEntity;
+import com.example.TP2.repository.exception.NetworkConnectionException;
 import com.example.TP2.repository.rest.DefaultDollarRepository;
 import com.example.TP2.repository.rest.DollarRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +21,19 @@ public class GetDollarList {
         this.dollarRepository = new DefaultDollarRepository();
     }
 
-    public Observable<Object> execute(Context ctx) {
+    public List<DollarEntity> execute(Context ctx) throws NetworkConnectionException, IOException {
+        List<DollarEntity> dollarList = new ArrayList<>();
+
+        dollarList.add(this.dollarRepository.retrieveMEPDollar(ctx));
+        dollarList.add(this.dollarRepository.retrieveOfficialDollar(ctx));
+        dollarList.add(this.dollarRepository.retrieveBlueDollar(ctx));
+
+        return dollarList;
+    }
+
+    public Observable<Object> executeWithObservable(Context ctx) {
         return io.reactivex.Observable.create(emitter -> {
-            List<DollarEntity> dollarList = new ArrayList<>();
-
-            dollarList.add(this.dollarRepository.retrieveMEPDollar(ctx));
-            dollarList.add(this.dollarRepository.retrieveOfficialDollar(ctx));
-            dollarList.add(this.dollarRepository.retrieveBlueDollar(ctx));
-
-            emitter.onNext(dollarList);
+            emitter.onNext(execute(ctx));
         });
     }
 }
