@@ -22,6 +22,9 @@
             android:name=".view.loginview.DefaultLoginActivity"
             android:exported="false" />
         <activity
+            android:name=".view.registerview.DefaultRegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.mainview.DefaultMainActivity"
             android:exported="true">
             <intent-filter>

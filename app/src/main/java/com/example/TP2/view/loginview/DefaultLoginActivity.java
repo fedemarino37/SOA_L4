@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
 import com.example.TP2.presenter.mainpresenter.MainPresenter;
+import com.example.TP2.view.registerview.DefaultRegisterActivity;
 
 public class DefaultLoginActivity extends AppCompatActivity implements LoginActivity {
 
@@ -50,20 +51,18 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
                     break;
                 case R.id.register_button:
                     Log.i(TAG, "Se hizo click en register");
-                    /*
                     //se genera un Intent para poder lanzar la activity principal
                     intent = new Intent(DefaultLoginActivity.this, DefaultRegisterActivity.class);
 
                     //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
                     //cuando se lanzado
-                    intent.putExtra("textoOrigen", textView.getText().toString());
+                    if (textView != null)
+                        intent.putExtra("textoOrigen", textView.getText().toString());
 
                     //se inicia la activity principal
                     startActivity(intent);
 
                     finish();
-                    */
-
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + view.getId());
