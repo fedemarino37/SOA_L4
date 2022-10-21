@@ -17,6 +17,7 @@ public class DefaultDollarRepository implements DollarRepository {
     private static final String OFFICIAL_DOLLAR = "/dolaroficial";
     private static final String BLUE_DOLLAR = "/dolarblue";
     private static final String MEP_DOLLAR = "/dolarbolsa";
+    private static final String TOURIST_DOLLAR = "/dolarturista";
 
     private final RestClient client;
     private final DollarEntityJsonMapper dollarJsonMapper;
@@ -55,6 +56,17 @@ public class DefaultDollarRepository implements DollarRepository {
 
         DollarEntity dollarEntity = dollarJsonMapper.transformToEntity(stringBody);
         dollarEntity.setType("MEP");
+
+        return dollarEntity;
+    }
+
+    @Override
+    public DollarEntity retrieveTouristDollar(Context ctx) throws IOException, NetworkConnectionException {
+        Response response = client.get(ctx, BASE_URL + TOURIST_DOLLAR, null);
+        String stringBody = response.body().string();
+
+        DollarEntity dollarEntity = dollarJsonMapper.transformToEntity(stringBody);
+        dollarEntity.setType("Turista");
 
         return dollarEntity;
     }

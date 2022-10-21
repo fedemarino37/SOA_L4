@@ -1,4 +1,4 @@
-package com.example.TP2.view;
+package com.example.TP2.view.mainview;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -14,13 +14,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
-import com.example.TP2.presenter.Presenter;
-import com.example.TP2.presenter.PresenterMVP;
+import com.example.TP2.presenter.mainpresenter.DefaultMainPresenter;
+import com.example.TP2.presenter.mainpresenter.MainPresenter;
+import com.example.TP2.view.DialogActivity;
 
-public class MainActivity extends AppCompatActivity implements ViewMVP {
+public class DefaultMainActivity extends AppCompatActivity implements MainActivity {
 
     private TextView textView;
-    private PresenterMVP presenter;
+    private MainPresenter presenter;
     private AlertDialog.Builder builder;
     private static final String TAG = "MainActivity";
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements ViewMVP {
         btn_alert.setOnClickListener(btnListener);
         btn_share.setOnClickListener(btnListener);
 
-        presenter = new Presenter(this);
+        presenter = new DefaultMainPresenter(this);
 
         builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_start)
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ViewMVP {
                     break;
                 case R.id.button_dialog:
                     //se genera un Intent para poder lanzar la activity principal
-                    intent = new Intent(MainActivity.this, DialogActivity.class);
+                    intent = new Intent(DefaultMainActivity.this, DialogActivity.class);
 
                     //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
                     //cuando se lanzado

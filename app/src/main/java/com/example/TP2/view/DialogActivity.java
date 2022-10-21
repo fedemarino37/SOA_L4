@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
+import com.example.TP2.view.mainview.DefaultMainActivity;
 
 public class DialogActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class DialogActivity extends AppCompatActivity {
         Intent intent;
         public void onClick(View v) {
             if (v.getId() == R.id.btnCancelar) {
-                intent = new Intent(DialogActivity.this, MainActivity.class);
+                intent = new Intent(DialogActivity.this, DefaultMainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Boton Cancelar presionado", Toast.LENGTH_SHORT).show();
                 finish();
