@@ -15,6 +15,7 @@ public class DefaultMainModel implements MainModel {
 
     public DefaultMainModel() {
         getDollarList = new GetDollarList();
+
     }
 
     @Override

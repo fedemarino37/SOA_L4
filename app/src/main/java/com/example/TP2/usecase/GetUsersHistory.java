@@ -2,28 +2,27 @@ package com.example.TP2.usecase;
 
 import android.content.Context;
 
-import com.example.TP2.entity.DollarEntity;
-import com.example.TP2.entity.UserEntity;
-import com.example.TP2.repository.sqlLite.DefaultSQLLiteRepository;
-import com.example.TP2.repository.sqlLite.SQLLiteRepository;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.TP2.repository.sqlite.DefaultSQLUserRepository;
+import com.example.TP2.repository.sqlite.SQLUserRepository;
 
 import io.reactivex.Observable;
 
 public class GetUsersHistory {
-    SQLLiteRepository sqlLiteRepo;
+    SQLUserRepository sqlLiteRepo;
 
-    public GetUsersHistory(Context context) {
-        this.sqlLiteRepo = new DefaultSQLLiteRepository(context);
+    public GetUsersHistory() {
+        this.sqlLiteRepo = new DefaultSQLUserRepository();
     }
 
     public Observable<Object> execute(Context ctx) {
         return io.reactivex.Observable.create(emitter -> {
-            List<UserEntity> usersList = this.sqlLiteRepo.retrieveUsersHistory(ctx);
-            emitter.onNext(usersList);
-            // Se podria invocar el retrieve directamente en el parametro del emitter.
+            emitter.onNext(this.sqlLiteRepo.retrieveUsersHistory(ctx));
+        });
+    }
+
+    public Observable<Object> executeWithObservable(Context ctx) {
+        return io.reactivex.Observable.create(emitter -> {
+            emitter.onNext(execute(ctx));
         });
     }
 
