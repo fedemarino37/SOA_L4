@@ -30,7 +30,7 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
 
 
     public List<SQLUserEntity> retrieveUsersHistory(Context ctx) {
-        this.sql = ctx.openOrCreateDatabase(DB_NAME, ctx.MODE_PRIVATE, null);
+        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
         sql.execSQL(createIfNotExistsUSERSHISTORY());
 
         List<SQLUserEntity> usersList = new ArrayList<> ();
@@ -39,19 +39,21 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
 
         cr.moveToFirst();
 
-        while( cr != null) {
-            user.setName(cr.getString(0));
-            user.setLastName(cr.getString(1));
-            user.setTimeStampLastAccess(cr.getString(2));
-        }
+        do {
+            user.setName(cr.getString(cr.getColumnIndexOrThrow(NAME)));
+            user.setLastName(cr.getString(cr.getColumnIndexOrThrow(LAST_NAME)));
+            user.setTimeStampLastAccess(cr.getString(cr.getColumnIndexOrThrow(LAST_ACCESS)));
+            user.setEmail(cr.getString(cr.getColumnIndexOrThrow(EMAIL)));
+        } while (cr.moveToNext());
 
+        cr.close();
         sql.close();
         return usersList;
     }
 
 
     public SQLUserEntity getUserData(Context ctx, String userEmail) {
-        this.sql = ctx.openOrCreateDatabase(DB_NAME, ctx.MODE_PRIVATE, null);
+        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
         SQLUserEntity user = new SQLUserEntity();
 
@@ -68,7 +70,7 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
 
 
     public boolean saveUserHistory(Context ctx, SQLUserEntity user) {
-        this.sql = ctx.openOrCreateDatabase(DB_NAME, ctx.MODE_PRIVATE, null);
+        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
         this.sql.rawQuery(createIfNotExistsUSERSHISTORY(),null);
         /*
         *   Se elimino el metodo open connection.
@@ -86,7 +88,7 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
     }
 
     public boolean insertNewUser(Context ctx, SQLUserEntity newUser) {
-        this.sql = ctx.openOrCreateDatabase(DB_NAME, ctx.MODE_PRIVATE, null);
+        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
         this.sql.rawQuery(createIfNotExistsUSERS(),null);
 
         ContentValues cv = new ContentValues();
