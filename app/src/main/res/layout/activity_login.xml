@@ -60,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_login_text"
-        android:background="@drawable/button_rounded_border"
+        android:background="@drawable/button_rounded_border_violet"
         />
 
     <Button
@@ -70,8 +70,9 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/button_rounded_border"
+        android:background="@drawable/button_rounded_border_violet"
         android:text="Registrarse"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

@@ -17,6 +17,7 @@ import com.example.TP2.R;
 import com.example.TP2.presenter.mainpresenter.DefaultMainPresenter;
 import com.example.TP2.presenter.mainpresenter.MainPresenter;
 import com.example.TP2.view.DialogActivity;
+import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.loginview.DefaultLoginActivity;
 
 public class DefaultMainActivity extends AppCompatActivity implements MainActivity {
@@ -37,6 +38,7 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         Button btn_dialog = findViewById(R.id.button_dialog);
         Button btn_alert = findViewById(R.id.alert);
         Button btn_prueba_login = findViewById(R.id.button_prueba_login);
+        Button btn_prueba_dolar = findViewById(R.id.button_prueba_dolar);
         ImageButton btn_share = findViewById(R.id.share);
 
         btn.setOnClickListener(btnListener);
@@ -44,6 +46,7 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         btn_alert.setOnClickListener(btnListener);
         btn_share.setOnClickListener(btnListener);
         btn_prueba_login.setOnClickListener(btnListener);
+        btn_prueba_dolar.setOnClickListener(btnListener);
 
         presenter = new DefaultMainPresenter(this);
 
@@ -97,6 +100,20 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
                 case R.id.button_prueba_login:
                     //se genera un Intent para poder lanzar la activity principal
                     intent = new Intent(DefaultMainActivity.this, DefaultLoginActivity.class);
+
+                    //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
+                    //cuando se lanzado
+                    intent.putExtra("textoOrigen", textView.getText().toString());
+
+                    //se inicia la activity principal
+                    startActivity(intent);
+
+                    finish();
+
+                    break;
+                case R.id.button_prueba_dolar:
+                    //se genera un Intent para poder lanzar la activity principal
+                    intent = new Intent(DefaultMainActivity.this, DefaultDollarActivity.class);
 
                     //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
                     //cuando se lanzado

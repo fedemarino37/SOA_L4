@@ -27,7 +27,6 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        textView = findViewById(R.id.text);
 
         Button btn_register = findViewById(R.id.register_button);
 
