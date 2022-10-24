@@ -1,8 +1,6 @@
 package com.example.TP2;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.TP2.entity.LoginUserRequest;
@@ -11,7 +9,6 @@ import com.example.TP2.entity.SQLUserEntity;
 import com.example.TP2.repository.exception.NetworkConnectionException;
 import com.example.TP2.repository.sqlite.DefaultSQLUserRepository;
 import com.example.TP2.repository.sqlite.SQLUserRepository;
-import com.example.TP2.usecase.CreateSQLUserEntity;
 import com.example.TP2.usecase.LoginUser;
 import com.example.TP2.usecase.RegisterUser;
 
@@ -108,6 +105,7 @@ public class ClassForTest {
         registerUserRequest.setPassword("12345678");
         registerUserRequest.setCommission(1900);
         registerUserRequest.setGroup(4);
+        registerUserRequest.setEnvironment("TEST");
        RegisterUser registerUser = new RegisterUser();
         try {
             registerUser.execute(ctx, registerUserRequest);
