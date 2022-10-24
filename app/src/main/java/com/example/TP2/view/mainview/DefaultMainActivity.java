@@ -34,7 +34,9 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
     private MainPresenter presenter;
     private AlertDialog.Builder builder;
     private static final String TAG = "MainActivity";
+
     //Todo: Borrar este atributo.
+    // Todo: Hacer validaciones de sql para ver que el usuario no este ya registrado en la tabla.
     ClassForTest userTest;
 
     @Override
@@ -48,9 +50,6 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         Button btn_dialog = findViewById(R.id.button_dialog);
         Button btn_alert = findViewById(R.id.alert);
 
-        // Todo: Agregar boton que "loguee" al usuario e ingrese su acceso a la tabla
-        // Todo: Agregar boton que registre al usuario y lo registre en la tabla.
-        // Todo: Agregar boton que muestre por consola los accesos a la app.
         Button btn_testLogin = findViewById(R.id.testLogin);
         Button btn_testRegister = findViewById(R.id.testRegister);
         Button btn_testShowUserHistory = findViewById(R.id.testShowUserHistory);
@@ -134,22 +133,19 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
                     startActivity(shareIntent);
                     break;
                 case R.id.testLogin:
-                    //userTest.testLoginWithAPI(getApplicationContext());
-                    userTest.testLoginSQL(getApplicationContext());
+                    userTest.testLoginWithAPI(getApplicationContext());
+//                    userTest.testLoginSQL(getApplicationContext());
                     System.out.println("USUARIO LOGUEADO");
                     break;
                 case R.id.testRegister:
-                    //Todo: Probar primero register y asegurar que se crea la entrada en la tabla para que login no rompa.
-                    userTest.testRegisterSQL(getApplicationContext());
+//                    userTest.testRegisterSQL(getApplicationContext());
+                    userTest.testRegisterWithAPI(getApplicationContext());
                     System.out.println("USUARIO REGISTRADO");
                     break;
                 case R.id.testShowUserHistory:
-                    // Todo: Metodo que muestra toda la tabla
-                    System.out.println("Entro aca");
                     userTest.testShowUsersHistoryTable(getApplicationContext());
                     break;
                 case R.id.testShowUSERS:
-                    // todo: Borrar user test.'
                     userTest.testShowUsers(getApplicationContext());
                     break;
 

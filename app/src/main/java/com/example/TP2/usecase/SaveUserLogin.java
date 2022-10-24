@@ -22,6 +22,7 @@ public class SaveUserLogin {
 
     public void execute(Context ctx, String email) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        // Todo: Modificar el formato, la hora se registra dos horas adelatando.
         String currentDateAndTime = sdf.format(new Date());
 
         SQLUserEntity sqlUserEntity = sql.getUserData(ctx,email);
