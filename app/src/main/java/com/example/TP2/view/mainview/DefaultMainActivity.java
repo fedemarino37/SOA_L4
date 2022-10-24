@@ -2,8 +2,10 @@ package com.example.TP2.view.mainview;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +15,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.TP2.ClassForTest;
 import com.example.TP2.R;
+import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.presenter.mainpresenter.DefaultMainPresenter;
 import com.example.TP2.presenter.mainpresenter.MainPresenter;
+import com.example.TP2.repository.exception.NetworkConnectionException;
+import com.example.TP2.repository.sqlite.DefaultSQLUserRepository;
+import com.example.TP2.repository.sqlite.SQLUserRepository;
+import com.example.TP2.usecase.LoginUser;
 import com.example.TP2.view.DialogActivity;
+
+import java.io.IOException;
 
 public class DefaultMainActivity extends AppCompatActivity implements MainActivity {
 
@@ -24,6 +34,8 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
     private MainPresenter presenter;
     private AlertDialog.Builder builder;
     private static final String TAG = "MainActivity";
+    //Todo: Borrar este atributo.
+    ClassForTest userTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +44,32 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         setContentView(R.layout.activity_main);
 
         textView = findViewById(R.id.text);
-        Button btn = findViewById(R.id.button);
+        Button btn = findViewById(R.id.deleteTables);
         Button btn_dialog = findViewById(R.id.button_dialog);
         Button btn_alert = findViewById(R.id.alert);
+
+        // Todo: Agregar boton que "loguee" al usuario e ingrese su acceso a la tabla
+        // Todo: Agregar boton que registre al usuario y lo registre en la tabla.
+        // Todo: Agregar boton que muestre por consola los accesos a la app.
+        Button btn_testLogin = findViewById(R.id.testLogin);
+        Button btn_testRegister = findViewById(R.id.testRegister);
+        Button btn_testShowUserHistory = findViewById(R.id.testShowUserHistory);
+        Button btn_testDeleteUser = findViewById(R.id.testShowUSERS);
+
+        userTest = new ClassForTest();
+
+
         ImageButton btn_share = findViewById(R.id.share);
 
         btn.setOnClickListener(btnListener);
         btn_dialog.setOnClickListener(btnListener);
         btn_alert.setOnClickListener(btnListener);
         btn_share.setOnClickListener(btnListener);
+
+        btn_testLogin.setOnClickListener(btnListener);
+        btn_testRegister.setOnClickListener(btnListener);
+        btn_testShowUserHistory.setOnClickListener(btnListener);
+        btn_testDeleteUser.setOnClickListener(btnListener);
 
         presenter = new DefaultMainPresenter(this);
 
@@ -74,8 +103,9 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         public void onClick(View view) {
             Intent intent;
             switch (view.getId()) {
-                case R.id.button:
-                    presenter.onButtonClick(getApplicationContext());
+                case R.id.deleteTables:
+                    SQLUserRepository sqlUserRepository = new DefaultSQLUserRepository();
+                    sqlUserRepository.deleteTables(getApplicationContext());
                     break;
                 case R.id.button_dialog:
                     //se genera un Intent para poder lanzar la activity principal
@@ -103,6 +133,26 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
                     Intent shareIntent = Intent.createChooser(sendIntent, null);
                     startActivity(shareIntent);
                     break;
+                case R.id.testLogin:
+                    //userTest.testLoginWithAPI(getApplicationContext());
+                    userTest.testLoginSQL(getApplicationContext());
+                    System.out.println("USUARIO LOGUEADO");
+                    break;
+                case R.id.testRegister:
+                    //Todo: Probar primero register y asegurar que se crea la entrada en la tabla para que login no rompa.
+                    userTest.testRegisterSQL(getApplicationContext());
+                    System.out.println("USUARIO REGISTRADO");
+                    break;
+                case R.id.testShowUserHistory:
+                    // Todo: Metodo que muestra toda la tabla
+                    System.out.println("Entro aca");
+                    userTest.testShowUsersHistoryTable(getApplicationContext());
+                    break;
+                case R.id.testShowUSERS:
+                    // todo: Borrar user test.'
+                    userTest.testShowUsers(getApplicationContext());
+                    break;
+
                 default:
                     throw new IllegalStateException("Unexpected value: " + view.getId());
             }

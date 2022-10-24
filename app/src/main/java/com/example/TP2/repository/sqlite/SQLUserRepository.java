@@ -10,6 +10,9 @@ public interface SQLUserRepository {
     List<SQLUserEntity> retrieveUsersHistory(Context ctx);
 
     SQLUserEntity getUserData(Context ctx, String userEmail);
-    boolean saveUserHistory(Context ctx, SQLUserEntity user);
-    boolean insertNewUser(Context ctx, SQLUserEntity newUser);
+    void saveUserHistory(Context ctx, SQLUserEntity user);
+    void insertNewUser(Context ctx, SQLUserEntity newUser);
+    public List<SQLUserEntity> getUsersTable (Context ctx);
+
+    void deleteTables(Context ctx);
 }

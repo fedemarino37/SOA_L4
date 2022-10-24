@@ -30,6 +30,3 @@ public class SQLUserEntity {
         this.timeStampLastAccess = timeStampLastAccess;
     }
 }
-// Todo: Acomodar lineas.
-// Todo: Cuando se registra un usuario, mandarlo a la tabla de SQLLite
-//      para traer sus datos cuando se loguea.

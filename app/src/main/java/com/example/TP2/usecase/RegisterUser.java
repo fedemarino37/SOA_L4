@@ -19,10 +19,12 @@ public class RegisterUser {
 
     UserRepository userRepository;
     SharedPreferencesRepository sharedPreferencesRepository;
+    CreateSQLUserEntity createSQLUserEntity;
 
     public RegisterUser() {
         userRepository = new DefaultUserRepository();
         sharedPreferencesRepository = new DefaultSharedPreferencesRepository();
+        createSQLUserEntity = new CreateSQLUserEntity();
     }
 
     public RegisterUserResponse execute(Context ctx, RegisterUserRequest registerUserRequest) throws NetworkConnectionException, IOException {
@@ -34,13 +36,7 @@ public class RegisterUser {
         *       de la base de datos.
         * */
 
-        SQLUserEntity newUser = new SQLUserEntity();
-        newUser.setEmail(registerUserRequest.getEmail());
-        newUser.setLastName(registerUserRequest.getLastName());
-        newUser.setName(registerUserRequest.getName());
-
-        InsertNewUser insertNewUser = new InsertNewUser(newUser);
-        insertNewUser.execute(ctx);
+        createSQLUserEntity.execute(ctx,registerUserRequest.getName(),registerUserRequest.getLastName(),registerUserRequest.getEmail());
 
         return registerUserResponse;
     }

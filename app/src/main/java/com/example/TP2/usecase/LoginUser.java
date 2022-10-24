@@ -18,10 +18,12 @@ public class LoginUser {
 
     UserRepository userRepository;
     SharedPreferencesRepository sharedPreferencesRepository;
+    SaveUserLogin saveUserLogin;
 
     public LoginUser() {
         userRepository = new DefaultUserRepository();
         sharedPreferencesRepository = new DefaultSharedPreferencesRepository();
+        saveUserLogin = new SaveUserLogin();
     }
 
     public LoginUserResponse execute(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException {
@@ -30,8 +32,7 @@ public class LoginUser {
 
         /* Paso el mail al constructor para mantener que el execute solo reciba ctx.
           Ademas, en Model, la funcion trabaja solo con context.    */
-        SaveUserLogin saveUserLogin = new SaveUserLogin(loginUserRequest.getEmail());
-        saveUserLogin.execute(ctx);
+        saveUserLogin.execute(ctx,loginUserRequest.getEmail());
 
         return loginUserResponse;
     }
