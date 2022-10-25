@@ -4,6 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class LoginUserRequest extends BaseEntityRequest {
 
+    public LoginUserRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     @SerializedName("email")
     private String email;
 

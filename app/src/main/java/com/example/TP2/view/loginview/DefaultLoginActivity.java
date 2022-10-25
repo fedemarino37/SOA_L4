@@ -27,6 +27,7 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        textView = findViewById(R.id.textView);
 
         Button btn_login = findViewById(R.id.login_button);
         Button btn_register = findViewById(R.id.register_button);
@@ -48,6 +49,7 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
                     Log.i(TAG, "Se hizo click en login");
                     Log.v("Email", txt_email.getText().toString());
                     Log.v("Contraseña", txt_password.getText().toString());
+                    presenter.onButtonClick(getApplicationContext());
                     break;
                 case R.id.register_button:
                     Log.i(TAG, "Se hizo click en register");

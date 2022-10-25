@@ -31,7 +31,7 @@ public class LoginUser {
         return loginUserResponse;
     }
 
-    public Observable<LoginUserResponse> executeWithObservable(Context ctx, LoginUserRequest loginUserRequest) {
+    public Observable<Object> executeWithObservable(Context ctx, LoginUserRequest loginUserRequest) {
         return Observable.create(emitter -> {
             emitter.onNext(execute(ctx, loginUserRequest));
         });
