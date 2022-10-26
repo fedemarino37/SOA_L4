@@ -25,11 +25,6 @@ public class DefaultLoginModel implements LoginModel {
     }
 
     @Override
-    public void sendMessage(Context ctx) {
-        //presenter.onFinished("MENSAJE AL PRESENTADOR");
-    }
-
-    @Override
     public void loginUser(Context ctx, LoginUserRequest loginUserRequest) {
         Observable<Object> loginUserObservable = loginUser.executeWithObservable(ctx, loginUserRequest);
         loginUserObservable.subscribeOn(Schedulers.io())

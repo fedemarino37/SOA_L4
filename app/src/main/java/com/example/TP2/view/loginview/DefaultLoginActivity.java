@@ -73,11 +73,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         }
     };
 
-    @SuppressLint("Range")
-    @Override
-    public void setString(String string) {
-        textView.setText(string);
-    }
 
     @Override
     public void setDollarView() {
