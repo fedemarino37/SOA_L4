@@ -18,6 +18,7 @@ import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.presenter.loginpresenter.DefaultLoginPresenter;
 import com.example.TP2.presenter.loginpresenter.LoginPresenter;
 import com.example.TP2.view.mainview.DefaultMainActivity;
+import com.example.TP2.view.registerview.DefaultRegisterActivity;
 
 public class DefaultLoginActivity extends AppCompatActivity implements LoginActivity {
 
@@ -64,7 +65,7 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
                     break;
                 case R.id.register_button:
                     Log.i(TAG, "Se hizo click en register");
-
+                    setRegisterView();
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + view.getId());
@@ -107,5 +108,15 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
     @Override
     public void hideLoading() {
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+    }
+
+    private void setRegisterView() {
+        //se genera un Intent para poder lanzar la activity principal
+        Intent intent = new Intent(this, DefaultRegisterActivity.class);
+
+        //se inicia la activity principal
+        startActivity(intent);
+
+        finish();
     }
 }
