@@ -16,7 +16,7 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
         this.loginView = loginView;
         this.model = new DefaultLoginModel(this);
     }
-    
+
     @Override
     public void onLoginUserFinished() {
         this.loginView.setDollarView();
