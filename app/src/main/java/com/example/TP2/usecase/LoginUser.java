@@ -28,6 +28,8 @@ public class LoginUser {
         LoginUserResponse loginUserResponse = userRepository.loginUser(ctx, loginUserRequest);
         sharedPreferencesRepository.saveToken(ctx, loginUserResponse.getToken());
 
+        //TODO: if success == false -> throw new custom exception
+
         return loginUserResponse;
     }
 

@@ -13,15 +13,23 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
-import com.example.TP2.presenter.mainpresenter.MainPresenter;
-import com.example.TP2.view.registerview.DefaultRegisterActivity;
+import com.example.TP2.entity.LoginUserRequest;
+import com.example.TP2.presenter.loginpresenter.DefaultLoginPresenter;
+import com.example.TP2.presenter.loginpresenter.LoginPresenter;
+import com.example.TP2.view.mainview.DefaultMainActivity;
 
 public class DefaultLoginActivity extends AppCompatActivity implements LoginActivity {
 
-    private TextView textView;
-    private MainPresenter presenter;
-    private AlertDialog.Builder builder;
     private static final String TAG = "LoginActivity";
+
+    private final LoginPresenter presenter;
+
+    private TextView textView;
+    private AlertDialog.Builder builder;
+
+    public DefaultLoginActivity() {
+        this.presenter = new DefaultLoginPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +49,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
-            Intent intent;
             switch (view.getId()) {
                 case R.id.login_button:
                     EditText txt_email = (EditText)findViewById(R.id.email_login_text);
@@ -49,22 +56,14 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
                     Log.i(TAG, "Se hizo click en login");
                     Log.v("Email", txt_email.getText().toString());
                     Log.v("Contraseña", txt_password.getText().toString());
-                    presenter.onButtonClick(getApplicationContext());
+
+                    LoginUserRequest loginUserRequest = new LoginUserRequest(txt_email.getText().toString(), txt_password.getText().toString());
+
+                    presenter.onLoginButtonClick(getApplicationContext(), loginUserRequest);
                     break;
                 case R.id.register_button:
                     Log.i(TAG, "Se hizo click en register");
-                    //se genera un Intent para poder lanzar la activity principal
-                    intent = new Intent(DefaultLoginActivity.this, DefaultRegisterActivity.class);
 
-                    //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
-                    //cuando se lanzado
-                    if (textView != null)
-                        intent.putExtra("textoOrigen", textView.getText().toString());
-
-                    //se inicia la activity principal
-                    startActivity(intent);
-
-                    finish();
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + view.getId());
@@ -76,5 +75,21 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
     @Override
     public void setString(String string) {
         textView.setText(string);
+    }
+
+    @Override
+    public void setDollarView() {
+        //se genera un Intent para poder lanzar la activity principal
+        Intent intent = new Intent(this, DefaultMainActivity.class);
+
+        //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
+        //cuando se lanzado
+        if (textView != null)
+            intent.putExtra("textoOrigen", textView.getText().toString());
+
+        //se inicia la activity principal
+        startActivity(intent);
+
+        finish();
     }
 }
