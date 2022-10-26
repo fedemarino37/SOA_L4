@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.entity.LoginUserResponse;
+import com.example.TP2.repository.exception.HttpBadRequestErrorException;
+import com.example.TP2.repository.exception.HttpUnexpectedErrorException;
 import com.example.TP2.repository.exception.NetworkConnectionException;
 import com.example.TP2.repository.rest.DefaultUserRepository;
 import com.example.TP2.repository.rest.UserRepository;
@@ -24,11 +26,13 @@ public class LoginUser {
         sharedPreferencesRepository = new DefaultSharedPreferencesRepository();
     }
 
-    public LoginUserResponse execute(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException {
+    public LoginUserResponse execute(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException {
         LoginUserResponse loginUserResponse = userRepository.loginUser(ctx, loginUserRequest);
-        sharedPreferencesRepository.saveToken(ctx, loginUserResponse.getToken());
+        if (!loginUserResponse.getSuccess()) {
+            throw new HttpUnexpectedErrorException(loginUserResponse.getMsg());
+        }
 
-        //TODO: if success == false -> throw new custom exception
+        sharedPreferencesRepository.saveToken(ctx, loginUserResponse.getToken());
 
         return loginUserResponse;
     }

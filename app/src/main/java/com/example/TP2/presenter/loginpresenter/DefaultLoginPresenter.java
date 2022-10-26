@@ -28,6 +28,21 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
     }
 
     @Override
+    public void onLoginError(String message) {
+        this.loginView.showToast(message);
+    }
+
+    @Override
+    public void onRequestStarted() {
+        this.loginView.showLoading();
+    }
+
+    @Override
+    public void onRequestFinished() {
+        this.loginView.hideLoading();
+    }
+
+    @Override
     public void onButtonClick(Context ctx) {
         this.model.sendMessage(ctx);
     }

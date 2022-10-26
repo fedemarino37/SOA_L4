@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -91,5 +92,20 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         startActivity(intent);
 
         finish();
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 }

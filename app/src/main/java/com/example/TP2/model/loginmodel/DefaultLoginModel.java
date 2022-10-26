@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.TP2.entity.LoginUserRequest;
+import com.example.TP2.repository.exception.HttpBadRequestErrorException;
 import com.example.TP2.usecase.LoginUser;
 
 import io.reactivex.Observable;
@@ -36,7 +37,7 @@ public class DefaultLoginModel implements LoginModel {
                 .subscribe(new Observer<Object>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d("Test", "Test msg");
+                        presenter.onRequestStarted();
                     }
 
                     @Override
@@ -46,12 +47,18 @@ public class DefaultLoginModel implements LoginModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("Test", e.getMessage());
+                        String message = e.getMessage();
+
+                        if (e.getClass() == HttpBadRequestErrorException.class) {
+                            message = "Mail o Contraseña incorrectos";
+                        }
+
+                        presenter.onLoginError(message);
                     }
 
                     @Override
                     public void onComplete() {
-
+                        presenter.onRequestFinished();
                     }
                 });
 
