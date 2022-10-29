@@ -62,21 +62,22 @@ public class ClassForTest {
 
     public void testRegisterSQL(Context ctx) {
         SQLUserRepository sql = new DefaultSQLUserRepository();
-        sql.insertNewUser(ctx,this.testUser);
+        sql.insertNewUser(ctx, this.testUser);
     }
 
     public void testShowUsersHistoryTable(Context ctx) {
         SQLUserRepository sqlUserRepository = new DefaultSQLUserRepository();
         List<SQLUserEntity> users = sqlUserRepository.retrieveUsersHistory(ctx);
 
-        if(users.isEmpty())
-            Toast.makeText(ctx, "VACIO!", Toast.LENGTH_SHORT).show();
+        if (users == null)
+            Toast.makeText(ctx, "No hay logueos registrados", Toast.LENGTH_LONG).show();
+        else {
+            for (int i = 0; i < users.size(); i++) {
+                System.out.print(users.get(i).getName() + " | ");
+                System.out.print(users.get(i).getLastName() + " | ");
+                System.out.println(users.get(i).getTimeStampLastAccess());
+            }
 
-        for (int i = 0; i < users.size(); i++) {
-            Toast.makeText(ctx, "NO SE MUESTRAN", Toast.LENGTH_SHORT).show();
-            System.out.print(users.get(i).getName() + " | ");
-            System.out.print(users.get(i).getLastName() + " | ");
-            System.out.println(users.get(i).getTimeStampLastAccess());
         }
 
     }
@@ -85,28 +86,30 @@ public class ClassForTest {
         SQLUserRepository sqlUserRepository = new DefaultSQLUserRepository();
         List<SQLUserEntity> users = sqlUserRepository.getUsersTable(ctx);
 
-        if(users.isEmpty())
-            Toast.makeText(ctx, "VACIO!", Toast.LENGTH_SHORT).show();
+        if (users == null)
+            Toast.makeText(ctx, "No hay usuarios registrados!", Toast.LENGTH_LONG).show();
+        else {
+            for (int i = 0; i < users.size(); i++) {
+                System.out.print(users.get(i).getName() + " | ");
+                System.out.print(users.get(i).getLastName() + " | ");
+                System.out.println(users.get(i).getEmail());
+            }
 
-        for (int i = 0; i < users.size(); i++) {
-            Toast.makeText(ctx, "NO SE MUESTRAN", Toast.LENGTH_SHORT).show();
-            System.out.print(users.get(i).getName() + " | ");
-            System.out.print(users.get(i).getLastName() + " | ");
-            System.out.println(users.get(i).getEmail());
         }
     }
 
     public void testRegisterWithAPI(Context ctx) {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
-        registerUserRequest.setName("qwe");
-        registerUserRequest.setLastName("qwe");
+        registerUserRequest.setName("qwe2");
+        registerUserRequest.setLastName("qwe2");
         registerUserRequest.setDni(12345678);
-        registerUserRequest.setEmail("qwe@mail.com");
+        registerUserRequest.setEmail("qwe2@mail.com");
         registerUserRequest.setPassword("12345678");
         registerUserRequest.setCommission(1900);
         registerUserRequest.setGroup(4);
         registerUserRequest.setEnvironment("TEST");
-       RegisterUser registerUser = new RegisterUser();
+
+        RegisterUser registerUser = new RegisterUser();
         try {
             registerUser.execute(ctx, registerUserRequest);
         } catch (NetworkConnectionException e) {

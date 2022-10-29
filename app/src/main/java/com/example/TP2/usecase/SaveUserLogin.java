@@ -1,6 +1,7 @@
 package com.example.TP2.usecase;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.entity.SQLUserEntity;
@@ -10,6 +11,7 @@ import com.example.TP2.repository.sqlite.SQLUserRepository;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import io.reactivex.Observable;
 
@@ -22,16 +24,18 @@ public class SaveUserLogin {
 
     public void execute(Context ctx, String email) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-        // Todo: Modificar el formato, la hora se registra dos horas adelatando.
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         String currentDateAndTime = sdf.format(new Date());
 
         SQLUserEntity sqlUserEntity = sql.getUserData(ctx,email);
-        /* REcibo el mail y tengo que registrar el nombre y apellido, busco en la BD
-         *   el nombre y ap a partir del mail recibido. */
-        sqlUserEntity.setTimeStampLastAccess(currentDateAndTime);
-        // A esos datos, les seteo la fecha y hora de acceso (como string).
 
-        sql.saveUserHistory(ctx,sqlUserEntity);
+        if(sqlUserEntity != null) {
+            sqlUserEntity.setTimeStampLastAccess(currentDateAndTime);
+            sql.saveUserHistory(ctx,sqlUserEntity);
+        } else
+            Toast.makeText(ctx, "Email no encontrado!", Toast.LENGTH_LONG).show();
+
+
     }
 
     public Observable<Void> executeWithObservable(Context ctx, LoginUserRequest loginUserRequest) {

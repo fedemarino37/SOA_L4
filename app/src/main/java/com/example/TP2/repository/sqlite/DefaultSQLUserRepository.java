@@ -4,16 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.example.TP2.entity.SQLUserEntity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DefaultSQLUserRepository implements SQLUserRepository {
     private SQLiteDatabase sql;
 
     private static final String DB_NAME = "dbUsersHistory";
+
+    // Table's names
     private static final String USER_HISTORY_TABLE = "usersHistory";
     private static final String USERS_TABLE = "users";
 
@@ -36,47 +40,57 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
 
     public List<SQLUserEntity> retrieveUsersHistory(Context ctx) {
         this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
-        sql.execSQL(CREATE_TABLE_USERS_HISTORY);
+        this.sql.execSQL(CREATE_TABLE_USERS_HISTORY);
 
-        List<SQLUserEntity> usersList = new ArrayList<>();
+        LinkedList<SQLUserEntity> usersList;
         SQLUserEntity user = new SQLUserEntity();
-        Cursor cr = sql.rawQuery(SELECT_ALL_FROM_USERS_HISTORY, null);
 
-        cr.moveToFirst();
+        Cursor cr = this.sql.rawQuery(SELECT_ALL_FROM_USERS_HISTORY, null);
 
-        do {
-            user.setName(cr.getString(cr.getColumnIndexOrThrow(NAME)));
-            user.setLastName(cr.getString(cr.getColumnIndexOrThrow(LAST_NAME)));
-            user.setTimeStampLastAccess(cr.getString(cr.getColumnIndexOrThrow(LAST_ACCESS)));
+        if (cr.getCount() > 0) {
+            cr.moveToFirst();
+            usersList = new LinkedList<>();
 
-            usersList.add(user);
-        } while (cr.moveToNext());
+            do {
+                user.setName(cr.getString(cr.getColumnIndexOrThrow(NAME)));
+                user.setLastName(cr.getString(cr.getColumnIndexOrThrow(LAST_NAME)));
+                user.setTimeStampLastAccess(cr.getString(cr.getColumnIndexOrThrow(LAST_ACCESS)));
+
+                usersList.addLast(user);
+            } while (cr.moveToNext());
+        } else
+            usersList = null;
 
         cr.close();
-        sql.close();
+        this.sql.close();
         return usersList;
     }
 
     public List<SQLUserEntity> getUsersTable(Context ctx) {
         this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
-        sql.execSQL(CREATE_TABLE_USERS);
+        this.sql.execSQL(CREATE_TABLE_USERS);
 
-        List<SQLUserEntity> usersList = new ArrayList<>();
+        LinkedList<SQLUserEntity> usersList;
         SQLUserEntity user = new SQLUserEntity();
-        Cursor cr = sql.rawQuery(SELECT_ALL_FROM_USERS, null);
 
-        cr.moveToFirst();
+        Cursor cr = this.sql.rawQuery(SELECT_ALL_FROM_USERS, null);
 
-        do {
-            user.setName(cr.getString(cr.getColumnIndexOrThrow(NAME)));
-            user.setLastName(cr.getString(cr.getColumnIndexOrThrow(LAST_NAME)));
-            user.setEmail(cr.getString(cr.getColumnIndexOrThrow(EMAIL)));
+        if (cr.getCount() > 0) {
+            cr.moveToFirst();
+            usersList = new LinkedList<>();
 
-            usersList.add(user);
-        } while (cr.moveToNext());
+            do {
+                user.setName(cr.getString(cr.getColumnIndexOrThrow(NAME)));
+                user.setLastName(cr.getString(cr.getColumnIndexOrThrow(LAST_NAME)));
+                user.setEmail(cr.getString(cr.getColumnIndexOrThrow(EMAIL)));
+
+                usersList.addLast(user);
+            } while (cr.moveToNext());
+        } else
+            usersList = null;
 
         cr.close();
-        sql.close();
+        this.sql.close();
         return usersList;
     }
 
@@ -87,25 +101,28 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         sql.execSQL("DROP TABLE " + USERS_TABLE);
         sql.execSQL("DELETE FROM " + USER_HISTORY_TABLE);
         sql.execSQL("DROP TABLE " + USER_HISTORY_TABLE);
+
         System.out.println("TABLAS ELIMINADAS!");
     }
 
-
     public SQLUserEntity getUserData(Context ctx, String userEmail) {
         this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
-        SQLUserEntity user = new SQLUserEntity();
+        SQLUserEntity user = null;
 
         Cursor cr = sql.rawQuery(selectFromUsersTable(userEmail), null);
-        cr.moveToFirst();
 
         if (cr.getCount() > 0) {
+            cr.moveToFirst();
+            user = new SQLUserEntity();
+
             user.setName(cr.getString(0));
             user.setLastName(cr.getString(1));
         }
 
+        cr.close();
+
         return user;
     }
-
 
     public void saveUserHistory(Context ctx, SQLUserEntity user) {
         this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
@@ -119,7 +136,6 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         this.sql.execSQL(CREATE_TABLE_USERS);
 
         this.sql.execSQL(insertIntoUsers(newUser));
-
     }
 
     private String insertIntoUsers(SQLUserEntity newUser) {

@@ -30,8 +30,6 @@ public class LoginUser {
         LoginUserResponse loginUserResponse = userRepository.loginUser(ctx, loginUserRequest);
         sharedPreferencesRepository.saveToken(ctx, loginUserResponse.getToken());
 
-        /* Paso el mail al constructor para mantener que el execute solo reciba ctx.
-          Ademas, en Model, la funcion trabaja solo con context.    */
         saveUserLogin.execute(ctx,loginUserRequest.getEmail());
 
         return loginUserResponse;

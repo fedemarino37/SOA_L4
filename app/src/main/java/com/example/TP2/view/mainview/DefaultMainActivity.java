@@ -36,7 +36,7 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
     private static final String TAG = "MainActivity";
 
     //Todo: Borrar este atributo.
-    // Todo: Hacer validaciones de sql para ver que el usuario no este ya registrado en la tabla.
+    // Todo: cuando registro un nuevo usuario, se reemplazan los usuarios anteriores con los datos del nuevo usuario.
     ClassForTest userTest;
 
     @Override
@@ -132,13 +132,11 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
                     Intent shareIntent = Intent.createChooser(sendIntent, null);
                     startActivity(shareIntent);
                     break;
-                case R.id.testLogin:
+                case R.id.testLogin:    // Todo: Usar los executes que correspondan.
                     userTest.testLoginWithAPI(getApplicationContext());
-//                    userTest.testLoginSQL(getApplicationContext());
                     System.out.println("USUARIO LOGUEADO");
                     break;
                 case R.id.testRegister:
-//                    userTest.testRegisterSQL(getApplicationContext());
                     userTest.testRegisterWithAPI(getApplicationContext());
                     System.out.println("USUARIO REGISTRADO");
                     break;
