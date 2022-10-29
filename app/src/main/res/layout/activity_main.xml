@@ -64,24 +64,28 @@
         app:srcCompat="@drawable/ic_baseline_share_24" />
 
     <Button
-        android:id="@+id/testLogin"
+        android:id="@+id/button_prueba_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="128dp"
-        android:layout_marginBottom="412dp"
-        android:text="testLogin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/testRegister" />
+        android:layout_marginBottom="28dp"
+        android:text="Prueba Login"
+        app:layout_constraintBottom_toTopOf="@+id/button_prueba_dolar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/testRegister"
+        android:id="@+id/button_prueba_dolar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="332dp"
-        android:text="testRegister"
-        app:layout_constraintBottom_toTopOf="@+id/button_dialog"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="72dp"
+        android:text="Prueba Dollar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.307"
+        app:layout_constraintStart_toEndOf="@+id/button_prueba_login"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+
 
     <Button
         android:id="@+id/testShowUserHistory"

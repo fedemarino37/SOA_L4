@@ -25,6 +25,8 @@ import com.example.TP2.repository.sqlite.DefaultSQLUserRepository;
 import com.example.TP2.repository.sqlite.SQLUserRepository;
 import com.example.TP2.usecase.LoginUser;
 import com.example.TP2.view.DialogActivity;
+import com.example.TP2.view.dollarview.DefaultDollarActivity;
+import com.example.TP2.view.loginview.DefaultLoginActivity;
 
 import java.io.IOException;
 
@@ -49,21 +51,18 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         Button btn = findViewById(R.id.deleteTables);
         Button btn_dialog = findViewById(R.id.button_dialog);
         Button btn_alert = findViewById(R.id.alert);
-
-        Button btn_testLogin = findViewById(R.id.testLogin);
-        Button btn_testRegister = findViewById(R.id.testRegister);
-        Button btn_testShowUserHistory = findViewById(R.id.testShowUserHistory);
+        Button btn_prueba_login = findViewById(R.id.button_prueba_login);
+        Button btn_prueba_dolar = findViewById(R.id.button_prueba_dolar);
+		Button btn_testShowUserHistory = findViewById(R.id.testShowUserHistory);
         Button btn_testDeleteUser = findViewById(R.id.testShowUSERS);
-
-        userTest = new ClassForTest();
-
-
         ImageButton btn_share = findViewById(R.id.share);
 
         btn.setOnClickListener(btnListener);
         btn_dialog.setOnClickListener(btnListener);
         btn_alert.setOnClickListener(btnListener);
         btn_share.setOnClickListener(btnListener);
+        btn_prueba_login.setOnClickListener(btnListener);
+        btn_prueba_dolar.setOnClickListener(btnListener);
 
         btn_testLogin.setOnClickListener(btnListener);
         btn_testRegister.setOnClickListener(btnListener);
@@ -109,6 +108,34 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
                 case R.id.button_dialog:
                     //se genera un Intent para poder lanzar la activity principal
                     intent = new Intent(DefaultMainActivity.this, DialogActivity.class);
+
+                    //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
+                    //cuando se lanzado
+                    intent.putExtra("textoOrigen", textView.getText().toString());
+
+                    //se inicia la activity principal
+                    startActivity(intent);
+
+                    finish();
+
+                    break;
+                case R.id.button_prueba_login:
+                    //se genera un Intent para poder lanzar la activity principal
+                    intent = new Intent(DefaultMainActivity.this, DefaultLoginActivity.class);
+
+                    //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
+                    //cuando se lanzado
+                    intent.putExtra("textoOrigen", textView.getText().toString());
+
+                    //se inicia la activity principal
+                    startActivity(intent);
+
+                    finish();
+
+                    break;
+                case R.id.button_prueba_dolar:
+                    //se genera un Intent para poder lanzar la activity principal
+                    intent = new Intent(DefaultMainActivity.this, DefaultDollarActivity.class);
 
                     //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
                     //cuando se lanzado
