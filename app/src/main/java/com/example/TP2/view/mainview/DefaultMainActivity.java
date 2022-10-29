@@ -5,30 +5,27 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.TP2.ClassForTest;
 import com.example.TP2.R;
-import com.example.TP2.entity.LoginUserRequest;
+import com.example.TP2.entity.SQLUserEntity;
 import com.example.TP2.presenter.mainpresenter.DefaultMainPresenter;
 import com.example.TP2.presenter.mainpresenter.MainPresenter;
-import com.example.TP2.repository.exception.NetworkConnectionException;
 import com.example.TP2.repository.sqlite.DefaultSQLUserRepository;
 import com.example.TP2.repository.sqlite.SQLUserRepository;
-import com.example.TP2.usecase.LoginUser;
 import com.example.TP2.view.DialogActivity;
 import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.loginview.DefaultLoginActivity;
 
-import java.io.IOException;
+import java.util.List;
 
 public class DefaultMainActivity extends AppCompatActivity implements MainActivity {
 
@@ -37,9 +34,6 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
     private AlertDialog.Builder builder;
     private static final String TAG = "MainActivity";
 
-    //Todo: Borrar este atributo.
-    // Todo: cuando registro un nuevo usuario, se reemplazan los usuarios anteriores con los datos del nuevo usuario.
-    ClassForTest userTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +58,6 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         btn_prueba_login.setOnClickListener(btnListener);
         btn_prueba_dolar.setOnClickListener(btnListener);
 
-        btn_testLogin.setOnClickListener(btnListener);
-        btn_testRegister.setOnClickListener(btnListener);
         btn_testShowUserHistory.setOnClickListener(btnListener);
         btn_testDeleteUser.setOnClickListener(btnListener);
 
@@ -159,19 +151,11 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
                     Intent shareIntent = Intent.createChooser(sendIntent, null);
                     startActivity(shareIntent);
                     break;
-                case R.id.testLogin:    // Todo: Usar los executes que correspondan.
-                    userTest.testLoginWithAPI(getApplicationContext());
-                    System.out.println("USUARIO LOGUEADO");
-                    break;
-                case R.id.testRegister:
-                    userTest.testRegisterWithAPI(getApplicationContext());
-                    System.out.println("USUARIO REGISTRADO");
-                    break;
                 case R.id.testShowUserHistory:
-                    userTest.testShowUsersHistoryTable(getApplicationContext());
+                    showUsersHistoryTable(getApplicationContext());
                     break;
                 case R.id.testShowUSERS:
-                    userTest.testShowUsers(getApplicationContext());
+                    showUsersRegistered(getApplicationContext());
                     break;
 
                 default:
@@ -179,6 +163,40 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
             }
         }
     };
+
+    // Todo: Esto deberia mostrarse en otra activity como si fuera una lista, para no mostrarlo por consola.
+    private void showUsersRegistered(Context ctx) {
+        SQLUserRepository sqlUserRepository = new DefaultSQLUserRepository();
+        List<SQLUserEntity> users = sqlUserRepository.getUsersTable(ctx);
+
+        if (users == null)
+            Toast.makeText(ctx, "No hay usuarios registrados!", Toast.LENGTH_LONG).show();
+        else {
+            for (int i = 0; i < users.size(); i++) {
+                System.out.print(users.get(i).getName() + " | ");
+                System.out.print(users.get(i).getLastName() + " | ");
+                System.out.println(users.get(i).getEmail());
+            }
+
+        }
+    }
+
+
+    private void showUsersHistoryTable(Context ctx) {
+        SQLUserRepository sqlUserRepository = new DefaultSQLUserRepository();
+        List<SQLUserEntity> users = sqlUserRepository.retrieveUsersHistory(ctx);
+
+        if (users == null)
+            Toast.makeText(ctx, "No hay logueos registrados", Toast.LENGTH_LONG).show();
+        else {
+            for (int i = 0; i < users.size(); i++) {
+                System.out.print(users.get(i).getName() + " | ");
+                System.out.print(users.get(i).getLastName() + " | ");
+                System.out.println(users.get(i).getTimeStampLastAccess());
+            }
+
+        }
+    }
 
     @Override
     protected void onResume() {

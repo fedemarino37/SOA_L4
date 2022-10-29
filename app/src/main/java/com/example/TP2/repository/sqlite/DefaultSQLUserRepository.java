@@ -115,8 +115,8 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
             cr.moveToFirst();
             user = new SQLUserEntity();
 
-            user.setName(cr.getString(0));
-            user.setLastName(cr.getString(1));
+            user.setName(cr.getString(1));
+            user.setLastName(cr.getString(2));
         }
 
         cr.close();
@@ -138,6 +138,8 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         this.sql.execSQL(insertIntoUsers(newUser));
     }
 
+    // Todo: Eliminar de la API que acepte solo un usuario y acepte todos los que estan registrados.
+    // Todo: Verificar que no guarda mas de un usuario.
     private String insertIntoUsers(SQLUserEntity newUser) {
         String insertIntoUsers =
                 "INSERT INTO users ("
