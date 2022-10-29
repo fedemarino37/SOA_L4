@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +20,8 @@ import com.example.TP2.R;
 import com.example.TP2.entity.RegisterUserRequest;
 import com.example.TP2.presenter.registerpresenter.DefaultRegisterPresenter;
 import com.example.TP2.presenter.registerpresenter.RegisterPresenter;
+import com.example.TP2.view.loginview.DefaultLoginActivity;
+import com.example.TP2.view.mainview.DefaultMainActivity;
 
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
 
@@ -54,7 +57,6 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
         @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
-            Intent intent;
             switch (view.getId()) {
                 case R.id.register_button:
                     EditText txt_name = (EditText)findViewById(R.id.name_register_text);
@@ -76,7 +78,7 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
                     registerUserRequest.setCommission(Integer.valueOf(spinner_commission.getSelectedItem().toString()));
                     registerUserRequest.setGroup(Integer.valueOf(txt_group.getText().toString()));
 
-                    presenter.onRegisterButtonClick(registerUserRequest);
+                    presenter.onRegisterButtonClick(getApplicationContext(), registerUserRequest);
 
                     break;
                 default:
@@ -89,5 +91,32 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
     @Override
     public void setString(String string) {
         textView.setText(string);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setDollarView() {
+        //se genera un Intent para poder lanzar la activity principal
+        Intent intent = new Intent(this, DefaultMainActivity.class);
+
+        //se inicia la activity principal
+        startActivity(intent);
+
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //se genera un Intent para poder lanzar la activity principal
+        Intent intent = new Intent(this, DefaultLoginActivity.class);
+
+        //se inicia la activity principal
+        startActivity(intent);
+
+        finish();
     }
 }

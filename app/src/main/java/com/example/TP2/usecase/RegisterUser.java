@@ -33,7 +33,7 @@ public class RegisterUser {
         return registerUserResponse;
     }
 
-    public Observable<RegisterUserResponse> executeWithObservable(Context ctx, RegisterUserRequest registerUserRequest) {
+    public Observable<Object> executeWithObservable(Context ctx, RegisterUserRequest registerUserRequest) {
         return Observable.create(emitter -> {
             emitter.onNext(execute(ctx, registerUserRequest));
         });
