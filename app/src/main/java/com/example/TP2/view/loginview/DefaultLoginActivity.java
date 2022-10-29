@@ -79,11 +79,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         //se genera un Intent para poder lanzar la activity principal
         Intent intent = new Intent(this, DefaultMainActivity.class);
 
-        //Se le agrega al intent los parametros que se le quieren pasar a la activyt principal
-        //cuando se lanzado
-        if (textView != null)
-            intent.putExtra("textoOrigen", textView.getText().toString());
-
         //se inicia la activity principal
         startActivity(intent);
 

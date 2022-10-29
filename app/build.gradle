@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+ext {
+    ENVIRONMENT = 'TEST'
+}
+
 android {
     compileSdk 32
 

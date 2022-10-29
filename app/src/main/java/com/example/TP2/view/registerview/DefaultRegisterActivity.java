@@ -1,17 +1,14 @@
 package com.example.TP2.view.registerview;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.system.Os;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,12 +21,11 @@ import com.example.TP2.view.loginview.DefaultLoginActivity;
 import com.example.TP2.view.mainview.DefaultMainActivity;
 
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
-
-    private TextView textView;
-    private RegisterPresenter presenter;
-    private AlertDialog.Builder builder;
     private static final String TAG = "RegisterActivity";
     private static final String[] COMMISSIONS = { "1900", "3900"};
+    private static final String ENVIRONMENT = "TEST";
+
+    private final RegisterPresenter presenter;
 
     public DefaultRegisterActivity() {
         this.presenter = new DefaultRegisterPresenter(this);
@@ -50,7 +46,6 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
     }
 
     private View.OnClickListener btnListener = new View.OnClickListener() {
@@ -69,7 +64,7 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
                     Log.i(TAG, "Se hizo click en register");
 
                     RegisterUserRequest registerUserRequest = new RegisterUserRequest();
-                    registerUserRequest.setEnvironment(Os.getenv("ENVIRONMENT"));
+                    registerUserRequest.setEnvironment(ENVIRONMENT);
                     registerUserRequest.setName(txt_name.getText().toString());
                     registerUserRequest.setLastName(txt_lastname.getText().toString());
                     registerUserRequest.setDni(Integer.valueOf(txt_dni.getText().toString()));
@@ -86,12 +81,6 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
             }
         }
     };
-
-    @SuppressLint("Range")
-    @Override
-    public void setString(String string) {
-        textView.setText(string);
-    }
 
     @Override
     public void showToast(String message) {
