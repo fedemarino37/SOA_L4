@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.entity.LoginUserResponse;
+import com.example.TP2.repository.exception.HttpBadRequestErrorException;
+import com.example.TP2.repository.exception.HttpUnexpectedErrorException;
 import com.example.TP2.repository.exception.NetworkConnectionException;
 import com.example.TP2.repository.rest.DefaultUserRepository;
 import com.example.TP2.repository.rest.UserRepository;
@@ -24,14 +26,18 @@ public class LoginUser {
         sharedPreferencesRepository = new DefaultSharedPreferencesRepository();
     }
 
-    public LoginUserResponse execute(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException {
+    public LoginUserResponse execute(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException {
         LoginUserResponse loginUserResponse = userRepository.loginUser(ctx, loginUserRequest);
+        if (!loginUserResponse.getSuccess()) {
+            throw new HttpUnexpectedErrorException(loginUserResponse.getMsg());
+        }
+
         sharedPreferencesRepository.saveToken(ctx, loginUserResponse.getToken());
 
         return loginUserResponse;
     }
 
-    public Observable<LoginUserResponse> executeWithObservable(Context ctx, LoginUserRequest loginUserRequest) {
+    public Observable<Object> executeWithObservable(Context ctx, LoginUserRequest loginUserRequest) {
         return Observable.create(emitter -> {
             emitter.onNext(execute(ctx, loginUserRequest));
         });

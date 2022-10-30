@@ -1,16 +1,13 @@
 package com.example.TP2.view.dollarview;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,15 +16,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
-import com.example.TP2.presenter.mainpresenter.MainPresenter;
-import com.example.TP2.view.registerview.RegisterActivity;
+import com.example.TP2.entity.DollarEntity;
+import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
+import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
+
+import java.util.List;
 
 public class DefaultDollarActivity extends AppCompatActivity implements DollarActivity {
 
-    private TextView textView;
-    private MainPresenter presenter;
-    private AlertDialog.Builder builder;
+    private DollarPresenter presenter;
     private static final String TAG = "DollarActivity";
+
+    public DefaultDollarActivity() {
+        this.presenter = new DefaultDollarPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,42 +37,42 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         setContentView(R.layout.activity_dollar);
 
         Button btn_update = findViewById(R.id.update_dollar_button);
-
         btn_update.setOnClickListener(btnListener);
 
+        presenter.onDollarListUpdate(getApplicationContext());
     }
 
-    private View.OnClickListener btnListener = new View.OnClickListener() {
-        @SuppressLint("NonConstantResourceId")
-        @Override
-        public void onClick(View view) {
-            Intent intent;
-            switch (view.getId()) {
-                case R.id.update_dollar_button:
-                    addDollarToTable();
-                    Log.i(TAG, "Se hizo click en udpate dollar");
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + view.getId());
-            }
+    private View.OnClickListener btnListener = view -> {
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.update_dollar_button:
+                presenter.onDollarListUpdate(getApplicationContext());
+                Log.i(TAG, "Se hizo click en udpate dollar");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + view.getId());
         }
     };
 
-    private void addDollarToTable() {
+    public void loadDollarEntityList(List<DollarEntity> dollarEntityList) {
         /* Adds a row to the dollar table */
-
         TableLayout tl = (TableLayout) findViewById(R.id.dollar_table);
-        TableRow tr = new TableRow(this);
-        View view = findViewById(R.id.dollar_example_row);
+        tl.removeViews(1, Math.max(0, tl.getChildCount() - 1));
+
+        View view = findViewById(R.id.dollar_row);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        tr.setLayoutParams(layoutParams);
 
-        tr.addView(generateTextView("MEP", R.id.dollar_type_example_text));
-        tr.addView(generateTextView("$100", R.id.dollar_buy_example_text));
-        tr.addView(generateTextView("$101", R.id.dollar_sell_example_text));
-        tr.addView(generateTextView("22/10/2022", R.id.dollar_date_example_text));
+        for (DollarEntity dollarEntity: dollarEntityList) {
+            TableRow tr = new TableRow(this);
+            tr.setLayoutParams(layoutParams);
 
-        tl.addView(tr, tl.getLayoutParams());
+            tr.addView(generateTextView(dollarEntity.getType(), R.id.dollar_type_text));
+            tr.addView(generateTextView(dollarEntity.getBuyValue().toString(), R.id.dollar_buy_text));
+            tr.addView(generateTextView(dollarEntity.getSellValue().toString(), R.id.dollar_sell_text));
+            tr.addView(generateTextView(dollarEntity.getDateTime().toString(), R.id.dollar_date_text));
+
+            tl.addView(tr, tl.getLayoutParams());
+        }
     }
 
     private TextView generateTextView(String text, int metaIdTextView) {
@@ -90,7 +92,5 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
     @SuppressLint("Range")
     @Override
-    public void setString(String string) {
-        textView.setText(string);
-    }
+    public void setString(String string) {}
 }

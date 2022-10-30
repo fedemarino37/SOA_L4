@@ -24,8 +24,8 @@ public class GetDollarList {
     public List<DollarEntity> execute(Context ctx) throws NetworkConnectionException, IOException {
         List<DollarEntity> dollarList = new ArrayList<>();
 
-        dollarList.add(this.dollarRepository.retrieveMEPDollar(ctx));
         dollarList.add(this.dollarRepository.retrieveOfficialDollar(ctx));
+        dollarList.add(this.dollarRepository.retrieveMEPDollar(ctx));
         dollarList.add(this.dollarRepository.retrieveBlueDollar(ctx));
 
         return dollarList;

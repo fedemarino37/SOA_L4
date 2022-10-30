@@ -8,6 +8,8 @@ import com.example.TP2.entity.RegisterUserRequest;
 import com.example.TP2.entity.RegisterUserResponse;
 import com.example.TP2.entity.mapper.LoginUserResponseJsonMapper;
 import com.example.TP2.entity.mapper.RegisterUserResponseJsonMapper;
+import com.example.TP2.repository.exception.HttpBadRequestErrorException;
+import com.example.TP2.repository.exception.HttpUnexpectedErrorException;
 import com.example.TP2.repository.exception.NetworkConnectionException;
 import com.example.TP2.repository.rest.restclient.DefaultRestClient;
 import com.example.TP2.repository.rest.restclient.RestClient;
@@ -31,22 +33,31 @@ public class DefaultUserRepository implements UserRepository {
     }
 
     @Override
-    public RegisterUserResponse registerUser(Context ctx, RegisterUserRequest registerUserRequest) throws NetworkConnectionException, IOException {
-        Response response = client.post(ctx, BASE_URL+REGISTER_USER, registerUserRequest.toJson(), null);
+    public RegisterUserResponse registerUser(Context ctx, RegisterUserRequest registerUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException {
+        Response response = client.post(ctx, BASE_URL + REGISTER_USER, registerUserRequest.toJson(), null);
+        verifyStatusCode(response);
 
-        //TODO: validate status code
         String stringBody = response.body().string();
 
         return registerUserResponseJsonMapper.transformToEntity(stringBody);
     }
 
     @Override
-    public LoginUserResponse loginUser(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException {
-        Response response = client.post(ctx, BASE_URL+LOGIN_USER, loginUserRequest.toJson(), null);
+    public LoginUserResponse loginUser(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException {
+        Response response = client.post(ctx, BASE_URL + LOGIN_USER, loginUserRequest.toJson(), null);
+        verifyStatusCode(response);
 
-        //TODO: validate status code
         String stringBody = response.body().string();
 
         return loginUserResponseJsonMapper.transformToEntity(stringBody);
+    }
+
+    private void verifyStatusCode(Response response) throws HttpBadRequestErrorException, HttpUnexpectedErrorException {
+        if (response.code() >= 400) {
+            if (response.code() == 400) {
+                throw new HttpBadRequestErrorException();
+            }
+            throw new HttpUnexpectedErrorException(response.message());
+        }
     }
 }
