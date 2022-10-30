@@ -23,6 +23,7 @@ import com.example.TP2.presenter.mainpresenter.DefaultMainPresenter;
 import com.example.TP2.presenter.mainpresenter.MainPresenter;
 import com.example.TP2.repository.sqlite.DefaultSQLUserRepository;
 import com.example.TP2.repository.sqlite.SQLUserRepository;
+import com.example.TP2.usecase.GetBatteryPercentage;
 import com.example.TP2.view.DialogActivity;
 import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.loginview.DefaultLoginActivity;
@@ -64,7 +65,8 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         btn_testDeleteUser.setOnClickListener(btnListener);
 
 
-        textView.setText(getBatteryPercentage());
+        GetBatteryPercentage getBatteryPercentage = new GetBatteryPercentage();
+        textView.setText(getBatteryPercentage.getPercentage(getApplicationContext()));
 
         presenter = new DefaultMainPresenter(this);
 
@@ -205,18 +207,6 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         }
     }
 
-    // Todo: Esto deberia ubicarse en otro lugar? Es un usecase?
-    private String getBatteryPercentage() {
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = getApplicationContext().registerReceiver(null, ifilter);
-
-        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-        float batteryPct = level * 100 / (float)scale;
-
-        return "Nivel de bateria: " + batteryPct;
-    }
 
     @Override
     protected void onResume() {

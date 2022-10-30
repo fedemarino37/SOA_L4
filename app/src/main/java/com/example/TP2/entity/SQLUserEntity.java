@@ -6,6 +6,16 @@ public class SQLUserEntity {
     private String email;
     private String timeStampLastAccess;
 
+    public SQLUserEntity() {
+    }
+
+    public SQLUserEntity(String name, String lastName, String email,String lastAccess) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email != null ? email : "";
+        this.timeStampLastAccess = lastAccess != null ? lastAccess : "";
+    }
+
     public String getEmail() { return email; }
 
     public void setEmail(String email) { this.email = email; }

@@ -43,7 +43,6 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         this.sql.execSQL(CREATE_TABLE_USERS_HISTORY);
 
         LinkedList<SQLUserEntity> usersList;
-        SQLUserEntity user = new SQLUserEntity();
 
         Cursor cr = this.sql.rawQuery(SELECT_ALL_FROM_USERS_HISTORY, null);
 
@@ -52,11 +51,12 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
             usersList = new LinkedList<>();
 
             do {
-                user.setName(cr.getString(cr.getColumnIndexOrThrow(NAME)));
-                user.setLastName(cr.getString(cr.getColumnIndexOrThrow(LAST_NAME)));
-                user.setTimeStampLastAccess(cr.getString(cr.getColumnIndexOrThrow(LAST_ACCESS)));
+                int id = Integer.parseInt(cr.getString(cr.getColumnIndexOrThrow("Id")));
+                String name = cr.getString(cr.getColumnIndexOrThrow(NAME));
+                String lastName = cr.getString(cr.getColumnIndexOrThrow(LAST_NAME));
+                String lastAccess = cr.getString(cr.getColumnIndexOrThrow(LAST_ACCESS));
 
-                usersList.addLast(user);
+                usersList.add(id-1, new SQLUserEntity(name,lastName,null,lastAccess));
             } while (cr.moveToNext());
         } else
             usersList = null;
@@ -71,7 +71,6 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         this.sql.execSQL(CREATE_TABLE_USERS);
 
         LinkedList<SQLUserEntity> usersList;
-        SQLUserEntity user = new SQLUserEntity();
 
         Cursor cr = this.sql.rawQuery(SELECT_ALL_FROM_USERS, null);
 
@@ -80,11 +79,12 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
             usersList = new LinkedList<>();
 
             do {
-                user.setName(cr.getString(cr.getColumnIndexOrThrow(NAME)));
-                user.setLastName(cr.getString(cr.getColumnIndexOrThrow(LAST_NAME)));
-                user.setEmail(cr.getString(cr.getColumnIndexOrThrow(EMAIL)));
+                int id = Integer.parseInt(cr.getString(cr.getColumnIndexOrThrow("Id")));
+                String name = cr.getString(cr.getColumnIndexOrThrow(NAME));
+                String lastName = cr.getString(cr.getColumnIndexOrThrow(LAST_NAME));
+                String email = cr.getString(cr.getColumnIndexOrThrow(EMAIL));
 
-                usersList.addLast(user);
+                usersList.add(id-1, new SQLUserEntity(name,lastName,email,null));
             } while (cr.moveToNext());
         } else
             usersList = null;
@@ -94,7 +94,6 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         return usersList;
     }
 
-    @Override
     public void deleteTables(Context ctx) {
         this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
         sql.execSQL("DELETE FROM " + USERS_TABLE);
@@ -139,7 +138,6 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
     }
 
     // Todo: Eliminar de la API que acepte solo un usuario y acepte todos los que estan registrados.
-    // Todo: Verificar que no guarda mas de un usuario.
     private String insertIntoUsers(SQLUserEntity newUser) {
         String insertIntoUsers =
                 "INSERT INTO users ("
