@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +63,9 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         btn_testShowUserHistory.setOnClickListener(btnListener);
         btn_testDeleteUser.setOnClickListener(btnListener);
 
+
+        textView.setText(getBatteryPercentage());
+
         presenter = new DefaultMainPresenter(this);
 
         builder = new AlertDialog.Builder(this);
@@ -80,6 +85,8 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
 
         Log.i(TAG, "Paso al estado Created");
     }
+
+
 
     @SuppressLint("Range")
     @Override
@@ -181,7 +188,7 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
         }
     }
 
-
+    // Todo: Esto tambien deberia ser una vista o inhabilitarse completamente ya que no esta pedido en tp.
     private void showUsersHistoryTable(Context ctx) {
         SQLUserRepository sqlUserRepository = new DefaultSQLUserRepository();
         List<SQLUserEntity> users = sqlUserRepository.retrieveUsersHistory(ctx);
@@ -196,6 +203,19 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
             }
 
         }
+    }
+
+    // Todo: Esto deberia ubicarse en otro lugar? Es un usecase?
+    private String getBatteryPercentage() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = getApplicationContext().registerReceiver(null, ifilter);
+
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+        float batteryPct = level * 100 / (float)scale;
+
+        return "Nivel de bateria: " + batteryPct;
     }
 
     @Override
