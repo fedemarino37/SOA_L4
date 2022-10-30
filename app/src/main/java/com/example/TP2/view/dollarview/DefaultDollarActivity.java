@@ -1,7 +1,6 @@
 package com.example.TP2.view.dollarview;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +16,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
-import com.example.TP2.presenter.mainpresenter.MainPresenter;
+import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
 
 public class DefaultDollarActivity extends AppCompatActivity implements DollarActivity {
 
-    private MainPresenter presenter;
-    private AlertDialog.Builder builder;
+    private DollarPresenter presenter;
     private static final String TAG = "DollarActivity";
 
     @Override
@@ -31,24 +29,19 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         setContentView(R.layout.activity_dollar);
 
         Button btn_update = findViewById(R.id.update_dollar_button);
-
         btn_update.setOnClickListener(btnListener);
 
     }
 
-    private View.OnClickListener btnListener = new View.OnClickListener() {
-        @SuppressLint("NonConstantResourceId")
-        @Override
-        public void onClick(View view) {
-            Intent intent;
-            switch (view.getId()) {
-                case R.id.update_dollar_button:
-                    addDollarToTable();
-                    Log.i(TAG, "Se hizo click en udpate dollar");
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + view.getId());
-            }
+    private View.OnClickListener btnListener = view -> {
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.update_dollar_button:
+                addDollarToTable();
+                Log.i(TAG, "Se hizo click en udpate dollar");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + view.getId());
         }
     };
 
