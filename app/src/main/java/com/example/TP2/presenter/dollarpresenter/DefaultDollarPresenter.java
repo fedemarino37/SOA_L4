@@ -21,12 +21,14 @@ public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, Do
 
     @Override
     public void onDollarListUpdate(Context ctx) {
+        dollarView.showLoading();
         model.getDollarList(ctx);
     }
 
     @Override
     public void setDollarList(List<DollarEntity> dollarList) {
         dollarView.loadDollarEntityList(dollarList);
+        dollarView.hideLoading();
     }
 
     @Override
