@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,7 +64,7 @@ public class DefaultMainActivity extends AppCompatActivity implements MainActivi
 
 
         GetBatteryPercentage getBatteryPercentage = new GetBatteryPercentage();
-        textView.setText(getBatteryPercentage.getPercentage(getApplicationContext()));
+        textView.setText(getBatteryPercentage.execute(getApplicationContext()));
 
         presenter = new DefaultMainPresenter(this);
 
