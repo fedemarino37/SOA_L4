@@ -1,7 +1,6 @@
 package com.example.TP2.model.loginmodel;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.repository.exception.HttpBadRequestErrorException;
@@ -56,8 +55,6 @@ public class DefaultLoginModel implements LoginModel {
                         presenter.onRequestFinished();
                     }
                 });
-
-        Log.d("Test", "log after observable");
     }
 
 }

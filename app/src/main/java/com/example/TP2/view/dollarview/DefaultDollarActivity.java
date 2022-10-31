@@ -3,7 +3,6 @@ package com.example.TP2.view.dollarview;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,7 +47,6 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         switch (view.getId()) {
             case R.id.update_dollar_button:
                 presenter.onDollarListUpdate(getApplicationContext());
-                Log.i(TAG, "Se hizo click en udpate dollar");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + view.getId());
@@ -75,9 +74,13 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         }
     }
 
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
     private TextView generateTextView(String text, int metaIdTextView) {
         /* Generates the text view object using the meta of another text view */
-
         TextView textView = new TextView(this);
         LinearLayout.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         View view = findViewById(metaIdTextView);
@@ -87,6 +90,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         textView.setGravity(((TextView) view).getGravity());
         textView.setText(text);
+
         return textView;
     }
 
