@@ -6,6 +6,5 @@ public interface LoginActivity {
     void showToast(String message);
 
     void showLoading();
-
     void hideLoading();
 }

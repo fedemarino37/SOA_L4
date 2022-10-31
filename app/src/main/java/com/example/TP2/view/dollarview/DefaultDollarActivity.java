@@ -21,7 +21,6 @@ import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -98,6 +97,16 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         textView.setText(text);
 
         return textView;
+    }
+
+    @Override
+    public void showLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
     @SuppressLint("Range")

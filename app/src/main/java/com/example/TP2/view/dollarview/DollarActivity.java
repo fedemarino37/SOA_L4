@@ -9,4 +9,6 @@ public interface DollarActivity {
     void loadDollarEntityList(List<DollarEntity> dollarEntityList);
 
     void showToast(String message);
+    void showLoading();
+    void hideLoading();
 }

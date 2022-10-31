@@ -9,9 +9,7 @@ public interface LoginModel {
     interface OnSendToPresenter{
         void onLoginUserFinished();
         void onLoginError(String message);
-
         void onRequestStarted();
-
         void onRequestFinished();
     }
 
