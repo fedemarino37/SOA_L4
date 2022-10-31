@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
@@ -46,6 +49,12 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        // Calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // Showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private View.OnClickListener btnListener = new View.OnClickListener() {
@@ -81,6 +90,19 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
             }
         }
     };
+
+    // this event will enable the back
+    // function to the button on press
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public void showToast(String message) {
