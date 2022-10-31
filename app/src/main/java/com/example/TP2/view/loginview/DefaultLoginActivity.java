@@ -2,10 +2,14 @@ package com.example.TP2.view.loginview;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,7 +29,7 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
 
     private final LoginPresenter presenter;
 
-    private AlertDialog.Builder builder;
+//    private AlertDialog.Builder builder;
 
     public DefaultLoginActivity() {
         this.presenter = new DefaultLoginPresenter(this);
@@ -50,8 +54,8 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.login_button:
-                    EditText txt_email = (EditText)findViewById(R.id.email_login_text);
-                    EditText txt_password = (EditText)findViewById(R.id.password_login_text);
+                    EditText txt_email = (EditText) findViewById(R.id.email_login_text);
+                    EditText txt_password = (EditText) findViewById(R.id.password_login_text);
                     Log.i(TAG, "Se hizo click en login");
                     Log.v("Email", txt_email.getText().toString());
                     Log.v("Contraseña", txt_password.getText().toString());
@@ -97,6 +101,33 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
+
+    @Override
+    public void requestRegister(String email) {
+        View layout = getLayoutInflater().inflate(R.layout.activity_login_not_recognized, null);
+        AlertDialog.Builder ADbuilder = new AlertDialog.Builder(this);
+        ADbuilder.setMessage("Ingrese su nombre y apellido: ")
+                .setView(layout)
+                .setTitle("Usuario no registrado en la base de datos")
+                .setPositiveButton("Registrar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        final EditText etName = layout.findViewById(R.id.idName);
+                        final EditText etLastName = layout.findViewById(R.id.idLastName);
+
+                        presenter.saveSQLUser(getApplicationContext(), email, etName.getText().toString(), etLastName.getText().toString());
+                    }
+                })
+                .setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "CANCELADO", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        ADbuilder.create();
+
+        ADbuilder.show();
+
+    }
+
     private void setRegisterView() {
         //se genera un Intent para poder lanzar la activity principal
         Intent intent = new Intent(this, DefaultRegisterActivity.class);
@@ -106,4 +137,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
 
         finish();
     }
+
+
 }

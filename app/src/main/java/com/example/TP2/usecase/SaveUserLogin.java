@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.entity.SQLUserEntity;
+import com.example.TP2.repository.exception.HttpUnexpectedErrorException;
+import com.example.TP2.repository.exception.SQLUserNotFoundException;
 import com.example.TP2.repository.sqlite.DefaultSQLUserRepository;
 import com.example.TP2.repository.sqlite.SQLUserRepository;
 
@@ -22,7 +24,7 @@ public class SaveUserLogin {
         sql = new DefaultSQLUserRepository();
     }
 
-    public void execute(Context ctx, String email) {
+    public void execute(Context ctx, String email) throws SQLUserNotFoundException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         String currentDateAndTime = sdf.format(new Date());
@@ -32,8 +34,9 @@ public class SaveUserLogin {
         if(sqlUserEntity != null) {
             sqlUserEntity.setTimeStampLastAccess(currentDateAndTime);
             sql.saveUserHistory(ctx,sqlUserEntity);
-        } else
-            Toast.makeText(ctx, "Email no encontrado!", Toast.LENGTH_LONG).show();
+        } else {
+           throw new SQLUserNotFoundException();
+        }
 
 
     }

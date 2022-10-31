@@ -8,4 +8,6 @@ public interface LoginActivity {
     void showLoading();
 
     void hideLoading();
+
+    void requestRegister(String email);
 }

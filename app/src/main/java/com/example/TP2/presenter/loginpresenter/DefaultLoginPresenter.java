@@ -47,4 +47,14 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
         this.loginView = null;
         this.model = null;
     }
+
+    @Override
+    public void saveSQLUser(Context ctx, String email, String name, String lastName) {
+        this.model.registerNewUser(ctx,email,name,lastName);
+    }
+
+    @Override
+    public void onSQLError(String email) {
+        this.loginView.requestRegister(email);
+    }
 }

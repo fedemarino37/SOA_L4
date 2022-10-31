@@ -7,4 +7,6 @@ import com.example.TP2.entity.LoginUserRequest;
 public interface LoginPresenter {
     void onLoginButtonClick(Context ctx, LoginUserRequest loginUserRequest);
     void onDestroy();
+
+    void saveSQLUser(Context ctx, String email, String name, String lastName);
 }

@@ -137,7 +137,6 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
         this.sql.execSQL(insertIntoUsers(newUser));
     }
 
-    // Todo: Eliminar de la API que acepte solo un usuario y acepte todos los que estan registrados.
     private String insertIntoUsers(SQLUserEntity newUser) {
         String insertIntoUsers =
                 "INSERT INTO users ("

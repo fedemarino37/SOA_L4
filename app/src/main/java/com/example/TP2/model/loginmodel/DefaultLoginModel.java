@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.repository.exception.HttpBadRequestErrorException;
+import com.example.TP2.repository.exception.SQLUserNotFoundException;
 import com.example.TP2.usecase.LoginUser;
+import com.example.TP2.usecase.RegisterUser;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -22,6 +24,7 @@ public class DefaultLoginModel implements LoginModel {
         this.presenter = presenter;
         loginUser = new LoginUser();
     }
+
 
     @Override
     public void loginUser(Context ctx, LoginUserRequest loginUserRequest) {
@@ -47,6 +50,11 @@ public class DefaultLoginModel implements LoginModel {
                             message = "Mail o Contraseña incorrectos";
                         }
 
+                        if(e.getClass() == SQLUserNotFoundException.class) {
+//                            message = "Usuario no reconocido en la base de datos";
+                            presenter.onSQLError(loginUserRequest.getEmail());
+                        }
+
                         presenter.onLoginError(message);
                     }
 
@@ -57,4 +65,15 @@ public class DefaultLoginModel implements LoginModel {
                 });
     }
 
+    @Override
+    public void registerNewUser(Context ctx, String email, String name, String lastName) {
+        RegisterUser regUser = new RegisterUser();
+        regUser.executeCreateSQLUserEntity(ctx,name,lastName,email);
+    }
+
+//    @Override
+//    public void loginNewUser(Context ctx, String email) {
+//        LoginUser loginUser = new LoginUser();
+//        loginUser.executeSaveUserLogin(ctx,email);
+//    }
 }

@@ -32,14 +32,13 @@ public class RegisterUser {
         RegisterUserResponse registerUserResponse = userRepository.registerUser(ctx, registerUserRequest);
         sharedPreferencesRepository.saveToken(ctx, registerUserResponse.getToken());
 
-        /*
-        *   Cuando se registra un nuevo usuario, ademas de enviarlo a la API, se guarda en una tabla
-        *       de la base de datos.
-        * */
-
         createSQLUserEntity.execute(ctx,registerUserRequest.getName(),registerUserRequest.getLastName(),registerUserRequest.getEmail());
 
         return registerUserResponse;
+    }
+
+    public void executeCreateSQLUserEntity(Context ctx, String name, String lastName, String email) {
+        createSQLUserEntity.execute(ctx,name,lastName,email);
     }
 
     public Observable<Object> executeWithObservable(Context ctx, RegisterUserRequest registerUserRequest) {
