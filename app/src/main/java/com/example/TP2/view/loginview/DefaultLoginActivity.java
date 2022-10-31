@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +16,7 @@ import com.example.TP2.R;
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.presenter.loginpresenter.DefaultLoginPresenter;
 import com.example.TP2.presenter.loginpresenter.LoginPresenter;
-import com.example.TP2.view.mainview.DefaultMainActivity;
+import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.registerview.DefaultRegisterActivity;
 
 public class DefaultLoginActivity extends AppCompatActivity implements LoginActivity {
@@ -26,7 +25,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
 
     private final LoginPresenter presenter;
 
-    private TextView textView;
     private AlertDialog.Builder builder;
 
     public DefaultLoginActivity() {
@@ -37,7 +35,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        textView = findViewById(R.id.textView);
 
         Button btn_login = findViewById(R.id.login_button);
         Button btn_register = findViewById(R.id.register_button);
@@ -77,7 +74,7 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
     @Override
     public void setDollarView() {
         //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultMainActivity.class);
+        Intent intent = new Intent(this, DefaultDollarActivity.class);
 
         //se inicia la activity principal
         startActivity(intent);

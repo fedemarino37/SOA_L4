@@ -2,11 +2,13 @@ package com.example.TP2.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 
 public class DollarEntity {
 
     @SerializedName("fecha")
-    private String dateTime;
+    private Date dateTime;
 
     @SerializedName("compra")
     private Float buyValue;
@@ -16,11 +18,11 @@ public class DollarEntity {
 
     private String type;
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 
