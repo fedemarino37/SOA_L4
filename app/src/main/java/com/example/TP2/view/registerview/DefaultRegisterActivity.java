@@ -23,7 +23,7 @@ import com.example.TP2.view.mainview.DefaultMainActivity;
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
     private static final String TAG = "RegisterActivity";
     private static final String[] COMMISSIONS = { "1900", "3900"};
-    private static final String ENVIRONMENT = "TEST";
+    private static final String ENVIRONMENT = "PROD";
 
     private final RegisterPresenter presenter;
 

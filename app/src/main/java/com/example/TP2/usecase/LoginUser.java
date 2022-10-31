@@ -36,6 +36,7 @@ public class LoginUser {
 
         sharedPreferencesRepository.saveToken(ctx, loginUserResponse.getToken());
 
+        // todo: Hay que verificar que si el usuario no esta en la tabla de users, no pueda entrar.
         saveUserLogin.execute(ctx,loginUserRequest.getEmail());
 
         return loginUserResponse;

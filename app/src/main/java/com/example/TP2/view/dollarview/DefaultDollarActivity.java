@@ -20,7 +20,11 @@ import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class DefaultDollarActivity extends AppCompatActivity implements DollarActivity {
 
@@ -62,6 +66,8 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         View view = findViewById(R.id.dollar_row);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         for (DollarEntity dollarEntity: dollarEntityList) {
             TableRow tr = new TableRow(this);
             tr.setLayoutParams(layoutParams);
@@ -69,7 +75,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
             tr.addView(generateTextView(dollarEntity.getType(), R.id.dollar_type_text));
             tr.addView(generateTextView(dollarEntity.getBuyValue().toString(), R.id.dollar_buy_text));
             tr.addView(generateTextView(dollarEntity.getSellValue().toString(), R.id.dollar_sell_text));
-            tr.addView(generateTextView(dollarEntity.getDateTime().toString(), R.id.dollar_date_text));
+            tr.addView(generateTextView(sdf.format(dollarEntity.getDateTime()), R.id.dollar_date_text));
 
             tl.addView(tr, tl.getLayoutParams());
         }
