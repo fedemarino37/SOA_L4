@@ -28,4 +28,9 @@ public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, Do
     public void setDollarList(List<DollarEntity> dollarList) {
         dollarView.loadDollarEntityList(dollarList);
     }
+
+    @Override
+    public void onError(String message) {
+        this.dollarView.showToast(message);
+    }
 }

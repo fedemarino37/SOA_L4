@@ -1,7 +1,6 @@
 package com.example.TP2.model.dollarmodel;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.usecase.GetDollarList;
@@ -31,9 +30,7 @@ public class DefaultDollarModel implements DollarModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
+                    public void onSubscribe(Disposable d) {}
 
                     @Override
                     public void onNext(Object object) {
@@ -43,13 +40,11 @@ public class DefaultDollarModel implements DollarModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("Test", e.getMessage());
+                        presenter.onError(e.getMessage());
                     }
 
                     @Override
-                    public void onComplete() {
-
-                    }
+                    public void onComplete() {}
                 });
     }
 }

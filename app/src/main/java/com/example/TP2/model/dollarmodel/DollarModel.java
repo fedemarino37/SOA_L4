@@ -12,5 +12,7 @@ public interface DollarModel {
 
     interface OnSendToPresenter {
         void setDollarList(List<DollarEntity> dollarList);
+
+        void onError(String message);
     }
 }

@@ -25,8 +25,9 @@ public class GetDollarList {
         List<DollarEntity> dollarList = new ArrayList<>();
 
         dollarList.add(this.dollarRepository.retrieveOfficialDollar(ctx));
-        dollarList.add(this.dollarRepository.retrieveMEPDollar(ctx));
         dollarList.add(this.dollarRepository.retrieveBlueDollar(ctx));
+        dollarList.add(this.dollarRepository.retrieveMEPDollar(ctx));
+        dollarList.add(this.dollarRepository.retrieveTouristDollar(ctx));
 
         return dollarList;
     }

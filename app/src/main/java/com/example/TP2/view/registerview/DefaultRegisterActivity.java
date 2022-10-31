@@ -17,8 +17,8 @@ import com.example.TP2.R;
 import com.example.TP2.entity.RegisterUserRequest;
 import com.example.TP2.presenter.registerpresenter.DefaultRegisterPresenter;
 import com.example.TP2.presenter.registerpresenter.RegisterPresenter;
+import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.loginview.DefaultLoginActivity;
-import com.example.TP2.view.mainview.DefaultMainActivity;
 
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
     private static final String TAG = "RegisterActivity";
@@ -90,7 +90,7 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
     @Override
     public void setDollarView() {
         //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultMainActivity.class);
+        Intent intent = new Intent(this, DefaultDollarActivity.class);
 
         //se inicia la activity principal
         startActivity(intent);
