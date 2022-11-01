@@ -36,6 +36,12 @@
             android:name=".view.dollarview.DefaultDollarActivity"
             android:exported="false" />
         <activity
+            android:name=".view.menuview.DefaultMenuActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".view.userhistoryview.DefaultUserHistoryActivity"
+            android:exported="false"/>
+        <activity
             android:name=".view.mainview.DefaultMainActivity"
             android:exported="false"/>
 

@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -107,6 +107,12 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
     @Override
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setErrorMessage(String message) {
+        TextView loginError = findViewById(R.id.register_error_text);
+        loginError.setText(message);
     }
 
     @Override
