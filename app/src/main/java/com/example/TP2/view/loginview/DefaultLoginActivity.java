@@ -90,11 +90,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
     }
 
     @Override
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showLoading() {
         findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
     }
