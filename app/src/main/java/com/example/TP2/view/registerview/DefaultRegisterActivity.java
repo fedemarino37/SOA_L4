@@ -78,7 +78,12 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
                     registerUserRequest.setLastName(txt_lastname.getText().toString());
                     registerUserRequest.setDni(Integer.valueOf(txt_dni.getText().toString()));
                     registerUserRequest.setEmail(txt_email.getText().toString());
-                    registerUserRequest.setPassword(txt_password.getText().toString());
+                    try {
+                        registerUserRequest.setPassword(txt_password.getText().toString());
+                    } catch (Exception e) {
+                        setErrorMessage(e.getMessage());
+                        break;
+                    }
                     registerUserRequest.setCommission(Integer.valueOf(spinner_commission.getSelectedItem().toString()));
                     registerUserRequest.setGroup(Integer.valueOf(txt_group.getText().toString()));
 
