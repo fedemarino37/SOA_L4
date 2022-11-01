@@ -35,6 +35,6 @@ public class DefaultRegisterPresenter implements RegisterPresenter, RegisterMode
 
     @Override
     public void onRegisterUserFinished() {
-        this.registerView.setDollarView();
+        this.registerView.setLoginView();
     }
 }

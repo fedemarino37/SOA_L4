@@ -20,8 +20,12 @@ import com.example.TP2.R;
 import com.example.TP2.entity.RegisterUserRequest;
 import com.example.TP2.presenter.registerpresenter.DefaultRegisterPresenter;
 import com.example.TP2.presenter.registerpresenter.RegisterPresenter;
+import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.loginview.DefaultLoginActivity;
 import com.example.TP2.view.mainview.DefaultMainActivity;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
     private static final String TAG = "RegisterActivity";
@@ -72,20 +76,21 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
                     EditText txt_group = (EditText)findViewById(R.id.group_register_text);
                     Log.i(TAG, "Se hizo click en register");
 
+
                     RegisterUserRequest registerUserRequest = new RegisterUserRequest();
                     registerUserRequest.setEnvironment(ENVIRONMENT);
-                    registerUserRequest.setName(txt_name.getText().toString());
-                    registerUserRequest.setLastName(txt_lastname.getText().toString());
-                    registerUserRequest.setDni(Integer.valueOf(txt_dni.getText().toString()));
-                    registerUserRequest.setEmail(txt_email.getText().toString());
                     try {
-                        registerUserRequest.setPassword(txt_password.getText().toString());
+                        registerUserRequest.setName(getValidatedString("Nombre", txt_name.getText().toString(), 1));
+                        registerUserRequest.setLastName(getValidatedString("Apellido", txt_lastname.getText().toString(), 1));
+                        registerUserRequest.setDni(getValidatedInt("DNI", txt_dni.getText().toString()));
+                        registerUserRequest.setEmail(getValidatedEmail(txt_email.getText().toString()));
+                        registerUserRequest.setPassword(getValidatedString("Contraseña", txt_password.getText().toString(), 8));
+                        registerUserRequest.setCommission(getValidatedInt("Comisión", spinner_commission.getSelectedItem().toString()));
+                        registerUserRequest.setGroup(getValidatedInt("Grupo", txt_group.getText().toString()));
                     } catch (Exception e) {
                         setErrorMessage(e.getMessage());
                         break;
                     }
-                    registerUserRequest.setCommission(Integer.valueOf(spinner_commission.getSelectedItem().toString()));
-                    registerUserRequest.setGroup(Integer.valueOf(txt_group.getText().toString()));
 
                     presenter.onRegisterButtonClick(getApplicationContext(), registerUserRequest);
 
@@ -95,6 +100,34 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
             }
         }
     };
+
+    public int getValidatedInt(String field, String strNumber) throws Exception {
+        try {
+            int number = Integer.valueOf(strNumber);
+            return number;
+        } catch (NumberFormatException e) {
+            throw new Exception("El field " + field + " debe contener números.");
+        }
+    }
+
+    public String getValidatedString(String field, String str, int minLength) throws Exception {
+        if (str.isEmpty())
+            throw new Exception("El field " + field + " no puede estar vacío.");
+        if (str.length() < minLength)
+            throw new Exception(field + " debe tener más de " + String.valueOf(minLength-1) + " caracteres.");
+        return str;
+    }
+
+    public String getValidatedEmail(String str) throws Exception {
+        if (str.isEmpty())
+            throw new Exception("El field email no puede estar vacío.");
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(str);
+        if (matcher.find())
+            return str;
+        else
+            throw new Exception("El field email tiene un formato incorrecto.");
+    }
 
     // this event will enable the back
     // function to the button on press
@@ -110,20 +143,15 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
     }
 
     @Override
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void setErrorMessage(String message) {
         TextView loginError = findViewById(R.id.register_error_text);
         loginError.setText(message);
     }
 
     @Override
-    public void setDollarView() {
+    public void setLoginView() {
         //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultMainActivity.class);
+        Intent intent = new Intent(this, DefaultLoginActivity.class);
 
         //se inicia la activity principal
         startActivity(intent);
@@ -133,12 +161,6 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
 
     @Override
     public void onBackPressed() {
-        //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultLoginActivity.class);
-
-        //se inicia la activity principal
-        startActivity(intent);
-
-        finish();
+        setLoginView();
     }
 }
