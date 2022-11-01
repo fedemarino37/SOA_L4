@@ -163,6 +163,7 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
     }
 
     private String selectFromUsersTable(String userEmail) {
+        this.sql.execSQL(CREATE_TABLE_USERS);
         return "SELECT * FROM " + USERS_TABLE + " WHERE Email = '" + userEmail + "'";
     }
 }

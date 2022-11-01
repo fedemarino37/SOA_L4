@@ -51,7 +51,6 @@ public class DefaultLoginModel implements LoginModel {
                         }
 
                         if(e.getClass() == SQLUserNotFoundException.class) {
-//                            message = "Usuario no reconocido en la base de datos";
                             presenter.onSQLError(loginUserRequest.getEmail());
                         }
 
