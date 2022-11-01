@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface DollarModel {
 
-    void getDollarList(Context ctx);
-
     interface OnSendToPresenter {
         void setDollarList(List<DollarEntity> dollarList);
 
         void onError(String message);
     }
+
+    void getDollarList(Context ctx);
 }

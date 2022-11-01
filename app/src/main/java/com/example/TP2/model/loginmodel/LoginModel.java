@@ -6,10 +6,6 @@ import com.example.TP2.entity.LoginUserRequest;
 
 public interface LoginModel {
 
-    void registerNewUser(Context ctx, String email, String name, String lastName);
-
-//    void loginNewUser(Context ctx, String email);
-
     interface OnSendToPresenter{
         void onLoginUserFinished();
         void onLoginError(String message);
@@ -18,6 +14,8 @@ public interface LoginModel {
 
         void onSQLError(String email);
     }
+
+    void registerNewUser(Context ctx, String email, String name, String lastName);
 
     void loginUser(Context ctx, LoginUserRequest loginUserRequest);
 }

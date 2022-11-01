@@ -1,7 +1,6 @@
 package com.example.TP2.view.dollarview;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -46,7 +45,6 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
     }
 
     private View.OnClickListener btnListener = view -> {
-        Intent intent;
         switch (view.getId()) {
             case R.id.update_dollar_button:
                 presenter.onDollarListUpdate(getApplicationContext());

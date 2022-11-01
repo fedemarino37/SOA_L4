@@ -1,14 +1,11 @@
 package com.example.TP2.repository.sqlite;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import com.example.TP2.entity.SQLUserEntity;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -105,7 +102,7 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
     }
 
     public SQLUserEntity getUserData(Context ctx, String userEmail) {
-        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
+        openOrCreateDatabase(ctx);
         SQLUserEntity user = null;
 
         Cursor cr = sql.rawQuery(selectFromUsersTable(userEmail), null);
@@ -124,17 +121,21 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
     }
 
     public void saveUserHistory(Context ctx, SQLUserEntity user) {
-        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
-        this.sql.execSQL(CREATE_TABLE_USERS_HISTORY);
+       openOrCreateDatabase(ctx);
 
         this.sql.execSQL(insertIntoUsersHistory(user));
     }
 
     public void insertNewUser(Context ctx, SQLUserEntity newUser) {
-        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
-        this.sql.execSQL(CREATE_TABLE_USERS);
+        openOrCreateDatabase(ctx);
 
         this.sql.execSQL(insertIntoUsers(newUser));
+    }
+
+    private void openOrCreateDatabase(Context ctx) {
+        this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
+        this.sql.execSQL(CREATE_TABLE_USERS);
+        this.sql.execSQL(CREATE_TABLE_USERS_HISTORY);
     }
 
     private String insertIntoUsers(SQLUserEntity newUser) {
