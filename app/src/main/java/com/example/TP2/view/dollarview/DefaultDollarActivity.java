@@ -1,7 +1,10 @@
 package com.example.TP2.view.dollarview;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +24,7 @@ import com.example.TP2.R;
 import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
+import com.example.TP2.sensors.ShakeDetector;
 import com.example.TP2.view.menuview.DefaultMenuActivity;
 
 import java.util.List;
@@ -29,6 +33,9 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
     private DollarPresenter presenter;
     private static final String TAG = "DollarActivity";
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     public DefaultDollarActivity() {
         this.presenter = new DefaultDollarPresenter(this);
@@ -45,6 +52,31 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         btn_menu.setOnClickListener(btnListener);
 
         presenter.onDollarListUpdate(getApplicationContext());
+
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                presenter.onDollarListUpdate(getApplicationContext());
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     private View.OnClickListener btnListener = view -> {
