@@ -33,6 +33,7 @@ public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, Do
 
     @Override
     public void onError(String message) {
-        this.dollarView.showToast(message);
+        dollarView.hideLoading();
+        dollarView.showToast(message);
     }
 }

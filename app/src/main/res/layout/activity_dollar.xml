@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".view.dollarview.DefaultDollarActivity">
 
+    <!-- Table Heading -->
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
     <TableLayout
         android:id="@+id/dollar_table"
         android:layout_width="match_parent"
@@ -14,20 +28,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_textView">
-
-        <!-- Table Heading -->
-        <RelativeLayout
-            android:id="@+id/loadingPanel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center" >
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone"/>
-        </RelativeLayout>
 
         <TableRow android:background="@color/teal_700" android:id="@+id/dollar_row"
             tools:ignore="UselessParent">
