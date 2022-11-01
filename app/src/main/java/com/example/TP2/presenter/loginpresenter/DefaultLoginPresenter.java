@@ -50,7 +50,7 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
 
     @Override
     public void saveSQLUser(Context ctx, String email, String name, String lastName) {
-        this.model.registerNewUser(ctx,email,name,lastName);
+        this.model.registerNewUser(ctx ,email, name, lastName);
     }
 
     @Override

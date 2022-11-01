@@ -52,6 +52,7 @@ public class DefaultLoginModel implements LoginModel {
 
                         if(e.getClass() == SQLUserNotFoundException.class) {
                             presenter.onSQLError(loginUserRequest.getEmail());
+                            return;
                         }
 
                         presenter.onLoginError(message);
@@ -67,12 +68,8 @@ public class DefaultLoginModel implements LoginModel {
     @Override
     public void registerNewUser(Context ctx, String email, String name, String lastName) {
         RegisterUser regUser = new RegisterUser();
-        regUser.executeCreateSQLUserEntity(ctx,name,lastName,email);
+        regUser.executeCreateSQLUserEntity(ctx, name, lastName, email);
+        presenter.onLoginUserFinished();
     }
 
-//    @Override
-//    public void loginNewUser(Context ctx, String email) {
-//        LoginUser loginUser = new LoginUser();
-//        loginUser.executeSaveUserLogin(ctx,email);
-//    }
 }
