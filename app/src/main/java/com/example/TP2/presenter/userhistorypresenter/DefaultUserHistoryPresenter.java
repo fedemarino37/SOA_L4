@@ -2,18 +2,16 @@ package com.example.TP2.presenter.userhistorypresenter;
 
 import android.content.Context;
 
-import com.example.TP2.model.mainmodel.DefaultMainModel;
-import com.example.TP2.model.mainmodel.MainModel;
 import com.example.TP2.view.userhistoryview.UserHistoryActivity;
 
-public class DefaultUserHistoryPresenter implements MainModel.OnSendToPresenter, UserHistoryPresenter {
+public class DefaultUserHistoryPresenter implements UserHistoryPresenter {
 
     private UserHistoryActivity userHistoryView;
-    private final MainModel model; // TODO: CAMBIAR
+    //private final MainModel model; // TODO: CAMBIAR
 
     public DefaultUserHistoryPresenter(UserHistoryActivity userHistoryView){
         this.userHistoryView = userHistoryView;
-        this.model = new DefaultMainModel(); // TODO: CAMBIAR
+        //this.model = new DefaultMainModel(); // TODO: CAMBIAR
     }
 
     @Override
@@ -21,14 +19,10 @@ public class DefaultUserHistoryPresenter implements MainModel.OnSendToPresenter,
         /*model.getUserHistoryList(ctx)*/;
     }
 
-    @Override
-    public void onFinished(String string) {
-        this.userHistoryView.setString(string);
-    }
 
     @Override
     public void onButtonClick(Context ctx) {
-        this.model.sendMessage(ctx, this);
+        //this.model.sendMessage(ctx, this);
     }
 
     @Override
