@@ -2,9 +2,12 @@ package com.example.TP2.presenter.userhistorypresenter;
 
 import android.content.Context;
 
+import com.example.TP2.entity.SQLUserEntity;
 import com.example.TP2.model.userhistorymodel.DefaultUserHistoryModel;
 import com.example.TP2.model.userhistorymodel.UserHistoryModel;
 import com.example.TP2.view.userhistoryview.UserHistoryActivity;
+
+import java.util.List;
 
 public class DefaultUserHistoryPresenter implements UserHistoryModel.OnSendToPresenter, UserHistoryPresenter {
 
@@ -13,22 +16,30 @@ public class DefaultUserHistoryPresenter implements UserHistoryModel.OnSendToPre
 
     public DefaultUserHistoryPresenter(UserHistoryActivity userHistoryView){
         this.userHistoryView = userHistoryView;
-        this.model = new DefaultUserHistoryModel();
+        this.model = new DefaultUserHistoryModel(this);
     }
 
     @Override
     public void onUserHistoryListUpdate(Context ctx) {
-        /*model.getUserHistoryList(ctx)*/;
+        userHistoryView.showLoading();
+        model.getUserHistoryList(ctx);
     }
 
-
-    @Override
-    public void onButtonClick(Context ctx) {
-        //this.model.sendMessage(ctx, this);
-    }
 
     @Override
     public void onDestroy() {
         this.userHistoryView = null;
+    }
+
+    @Override
+    public void setUserHistoryList(List<SQLUserEntity> userHistoryList) {
+        userHistoryView.loadUserHistoryList(userHistoryList);
+        userHistoryView.hideLoading();
+    }
+
+    @Override
+    public void onError(String message) {
+        userHistoryView.hideLoading();
+        userHistoryView.showToast(message);
     }
 }

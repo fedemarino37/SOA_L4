@@ -6,6 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".view.dollarview.DefaultDollarActivity">
 
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image_dolar"
+        android:layout_width="97dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/foto_dolar" />
+
+    <TextView
+        android:id="@+id/user_history_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Historial de Usuarios"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_dolar" />
+
     <TableLayout
         android:id="@+id/user_history_table"
         android:layout_width="match_parent"
@@ -48,26 +81,6 @@
         <!-- Table Data will be added dynamically -->
 
     </TableLayout>
-
-    <ImageView
-        android:id="@+id/image_dolar"
-        android:layout_width="97dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/foto_dolar" />
-
-    <TextView
-        android:id="@+id/user_history_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Historial de Usuarios"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_dolar" />
 
     <Button
         android:id="@+id/update_user_history_button"
