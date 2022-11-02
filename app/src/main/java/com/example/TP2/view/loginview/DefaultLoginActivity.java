@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,8 +84,9 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
     }
 
     @Override
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    public void setErrorMessage(String message) {
+        TextView loginError = findViewById(R.id.login_error_text);
+        loginError.setText(message);
     }
 
     @Override

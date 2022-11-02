@@ -75,7 +75,10 @@ public class RegisterUserRequest extends BaseEntityRequest {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) throws Exception {
+        if (password.length() < 8) {
+            throw new Exception("La contraseña debe tener como mínimo 8 caracteres.");
+        }
         this.password = password;
     }
 

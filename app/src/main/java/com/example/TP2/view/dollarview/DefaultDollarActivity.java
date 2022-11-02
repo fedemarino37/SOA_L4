@@ -1,13 +1,18 @@
 package com.example.TP2.view.dollarview;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,6 +24,8 @@ import com.example.TP2.R;
 import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
+import com.example.TP2.sensors.ShakeDetector;
+import com.example.TP2.view.menuview.DefaultMenuActivity;
 
 import java.util.List;
 
@@ -26,6 +33,9 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
     private DollarPresenter presenter;
     private static final String TAG = "DollarActivity";
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     public DefaultDollarActivity() {
         this.presenter = new DefaultDollarPresenter(this);
@@ -38,8 +48,35 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
         Button btn_update = findViewById(R.id.update_dollar_button);
         btn_update.setOnClickListener(btnListener);
+        ImageButton btn_menu = findViewById(R.id.menu_button);
+        btn_menu.setOnClickListener(btnListener);
 
         presenter.onDollarListUpdate(getApplicationContext());
+
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                presenter.onDollarListUpdate(getApplicationContext());
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     private View.OnClickListener btnListener = view -> {
@@ -48,6 +85,10 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
             case R.id.update_dollar_button:
                 presenter.onDollarListUpdate(getApplicationContext());
                 Log.i(TAG, "Se hizo click en udpate dollar");
+                break;
+            case R.id.menu_button:
+                Log.i(TAG, "Se hizo click en ver menu");
+                setMenuView();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + view.getId());
@@ -88,6 +129,16 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         textView.setGravity(((TextView) view).getGravity());
         textView.setText(text);
         return textView;
+    }
+
+    public void setMenuView() {
+        //se genera un Intent para poder lanzar la activity principal
+        Intent intent = new Intent(this, DefaultMenuActivity.class);
+
+        //se inicia la activity principal
+        startActivity(intent);
+
+        finish();
     }
 
     @SuppressLint("Range")

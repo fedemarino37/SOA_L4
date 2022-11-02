@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -20,8 +21,8 @@
             android:name=".view.DialogActivity"
             android:exported="false" />
         <activity
-            android:name=".view.loginview.DefaultLoginActivity"
-            android:exported="true" >
+            android:name=".view.captchaactivity.DefaultCaptchaActivity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,11 +31,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.loginview.DefaultLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.registerview.DefaultRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".view.dollarview.DefaultDollarActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.menuview.DefaultMenuActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".view.userhistoryview.DefaultUserHistoryActivity"
+            android:exported="false"/>
         <activity
             android:name=".view.mainview.DefaultMainActivity"
             android:exported="false"/>
