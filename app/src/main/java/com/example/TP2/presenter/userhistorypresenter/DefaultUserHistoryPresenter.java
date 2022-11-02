@@ -2,16 +2,18 @@ package com.example.TP2.presenter.userhistorypresenter;
 
 import android.content.Context;
 
+import com.example.TP2.model.userhistorymodel.DefaultUserHistoryModel;
+import com.example.TP2.model.userhistorymodel.UserHistoryModel;
 import com.example.TP2.view.userhistoryview.UserHistoryActivity;
 
-public class DefaultUserHistoryPresenter implements UserHistoryPresenter {
+public class DefaultUserHistoryPresenter implements UserHistoryModel.OnSendToPresenter, UserHistoryPresenter {
 
     private UserHistoryActivity userHistoryView;
-    //private final MainModel model; // TODO: CAMBIAR
+    private final UserHistoryModel model;
 
     public DefaultUserHistoryPresenter(UserHistoryActivity userHistoryView){
         this.userHistoryView = userHistoryView;
-        //this.model = new DefaultMainModel(); // TODO: CAMBIAR
+        this.model = new DefaultUserHistoryModel();
     }
 
     @Override
