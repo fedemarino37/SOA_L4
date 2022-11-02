@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +26,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
 
     private final LoginPresenter presenter;
 
-//    private AlertDialog.Builder builder;
 
     public DefaultLoginActivity() {
         this.presenter = new DefaultLoginPresenter(this);
@@ -43,7 +41,6 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
 
         btn_login.setOnClickListener(btnListener);
         btn_register.setOnClickListener(btnListener);
-
     }
 
     private View.OnClickListener btnListener = new View.OnClickListener() {
@@ -72,26 +69,9 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         }
     };
 
-
     @Override
-    public void setDollarView() {
-        //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultDollarActivity.class);
-
-        //se inicia la activity principal
-        startActivity(intent);
-
-        finish();
-    }
-
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void setErrorMessage(String message) {
-        TextView loginError = findViewById(R.id.login_error_text);
-        loginError.setText(message);
     }
 
     @Override
@@ -129,11 +109,16 @@ public class DefaultLoginActivity extends AppCompatActivity implements LoginActi
         ADbuilder.show();
     }
 
-    private void setRegisterView() {
-        //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultRegisterActivity.class);
+    @Override
+    public void setDollarView() {
+        Intent intent = new Intent(this, DefaultDollarActivity.class);
+        startActivity(intent);
 
-        //se inicia la activity principal
+        finish();
+    }
+
+    private void setRegisterView() {
+        Intent intent = new Intent(this, DefaultRegisterActivity.class);
         startActivity(intent);
 
         finish();

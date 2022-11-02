@@ -2,9 +2,6 @@ plugins {
     id 'com.android.application'
 }
 
-ext {
-    ENVIRONMENT = 'TEST'
-}
 
 android {
     compileSdk 32
@@ -20,7 +17,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "ENVIRONMENT", "\"TEST\""
+        }
+
         release {
+            buildConfigField "String", "ENVIRONMENT", "PROD"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

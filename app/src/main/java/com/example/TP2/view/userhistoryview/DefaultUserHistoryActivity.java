@@ -140,6 +140,4 @@ public class DefaultUserHistoryActivity extends AppCompatActivity implements Use
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
-
-
 }

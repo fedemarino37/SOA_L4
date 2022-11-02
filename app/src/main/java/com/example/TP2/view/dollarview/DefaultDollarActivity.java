@@ -1,6 +1,5 @@
 package com.example.TP2.view.dollarview;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -127,11 +126,6 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         }
     }
 
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-    }
-
     private TextView generateTextView(String text, int metaIdTextView) {
         /* Generates the text view object using the meta of another text view */
         TextView textView = new TextView(this);
@@ -157,6 +151,10 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
 
     private void setUserHistoryView() {
         Intent intent = new Intent(this, DefaultUserHistoryActivity.class);
@@ -164,7 +162,4 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         finish();
     }
 
-    @SuppressLint("Range")
-    @Override
-    public void setString(String string) {}
 }
