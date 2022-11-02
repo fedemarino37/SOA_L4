@@ -62,7 +62,6 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-
             @Override
             public void onShake(int count) {
                 presenter.onDollarListUpdate(getApplicationContext());

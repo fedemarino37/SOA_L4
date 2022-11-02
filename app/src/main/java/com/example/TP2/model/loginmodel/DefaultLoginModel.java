@@ -25,7 +25,6 @@ public class DefaultLoginModel implements LoginModel {
         loginUser = new LoginUser();
     }
 
-
     @Override
     public void loginUser(Context ctx, LoginUserRequest loginUserRequest) {
         Observable<Object> loginUserObservable = loginUser.executeWithObservable(ctx, loginUserRequest);

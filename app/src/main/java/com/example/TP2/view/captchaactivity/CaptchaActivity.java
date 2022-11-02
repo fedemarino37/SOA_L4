@@ -5,8 +5,6 @@ public interface CaptchaActivity {
 
     void setCaptcha(int captcha);
 
-    void setErrorMessage(String message);
-
     void setString(String string);
 
     void showToast(String message);

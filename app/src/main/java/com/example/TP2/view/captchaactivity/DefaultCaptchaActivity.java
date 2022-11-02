@@ -70,12 +70,6 @@ public class DefaultCaptchaActivity extends AppCompatActivity implements Captcha
     }
 
     @Override
-    public void setErrorMessage(String message) {
-        TextView loginError = findViewById(R.id.captcha_error_text);
-        loginError.setText(message);
-    }
-
-    @Override
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
