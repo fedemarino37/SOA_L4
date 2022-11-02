@@ -24,7 +24,7 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
 
     @Override
     public void onLoginError(String message) {
-        this.loginView.showToast(message);
+        this.loginView.setErrorMessage(message);
     }
 
     @Override

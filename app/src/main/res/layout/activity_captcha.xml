@@ -8,7 +8,17 @@
     tools:context=".view.loginview.DefaultLoginActivity">
 
     <TextView
-        android:id="@+id/login_error_text"
+        android:id="@+id/captcha_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingrese Captcha"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_login" />
+
+    <TextView
+        android:id="@+id/captcha_error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -16,21 +26,22 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_login_text" />
+        app:layout_constraintTop_toBottomOf="@+id/captcha_login_text" />
 
     <RelativeLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="-16dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="invisible"/>
+            android:visibility="gone" />
+
     </RelativeLayout>
 
     <ImageView
@@ -44,62 +55,50 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/foto_login" />
 
-    <EditText
-        android:id="@+id/email_login_text"
+    <TextView
+        android:id="@+id/captcha_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
+        android:gravity="center"
+        android:inputType="textShortMessage"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/password_login_text"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/captcha_login_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_login" />
+        app:layout_constraintTop_toBottomOf="@+id/captcha_textView" />
 
     <EditText
-        android:id="@+id/password_login_text"
+        android:id="@+id/captcha_login_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
+        android:hint="Ingrese el código ubicado encima"
+        android:inputType="number"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_login_text" />
+        app:layout_constraintTop_toBottomOf="@+id/captcha_text" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/captcha_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/button_rounded_border_violet"
-        android:text="Iniciar Sesión"
+        android:text="Iniciar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_error_text" />
+        app:layout_constraintTop_toBottomOf="@+id/captcha_error_text" />
 
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/button_rounded_border_violet"
-        android:text="Registrarse"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,7 @@ public class DefaultRegisterPresenter implements RegisterPresenter, RegisterMode
 
     @Override
     public void onRegisterError(String message) {
-        this.registerView.showToast(message);
+        this.registerView.setErrorMessage(message);
     }
 
     @Override

@@ -4,13 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
@@ -19,6 +21,9 @@ import com.example.TP2.presenter.registerpresenter.DefaultRegisterPresenter;
 import com.example.TP2.presenter.registerpresenter.RegisterPresenter;
 import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.loginview.DefaultLoginActivity;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
     private static final String TAG = "RegisterActivity";
@@ -46,6 +51,12 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        // Calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // Showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private View.OnClickListener btnListener = new View.OnClickListener() {
@@ -65,13 +76,18 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
 
                     RegisterUserRequest registerUserRequest = new RegisterUserRequest();
                     registerUserRequest.setEnvironment(ENVIRONMENT);
-                    registerUserRequest.setName(txt_name.getText().toString());
-                    registerUserRequest.setLastName(txt_lastname.getText().toString());
-                    registerUserRequest.setDni(Integer.valueOf(txt_dni.getText().toString()));
-                    registerUserRequest.setEmail(txt_email.getText().toString());
-                    registerUserRequest.setPassword(txt_password.getText().toString());
-                    registerUserRequest.setCommission(Integer.valueOf(spinner_commission.getSelectedItem().toString()));
-                    registerUserRequest.setGroup(Integer.valueOf(txt_group.getText().toString()));
+                    try {
+                        registerUserRequest.setName(getValidatedString("Nombre", txt_name.getText().toString(), 1));
+                        registerUserRequest.setLastName(getValidatedString("Apellido", txt_lastname.getText().toString(), 1));
+                        registerUserRequest.setDni(getValidatedInt("DNI", txt_dni.getText().toString()));
+                        registerUserRequest.setEmail(getValidatedEmail(txt_email.getText().toString()));
+                        registerUserRequest.setPassword(getValidatedString("Contraseña", txt_password.getText().toString(), 8));
+                        registerUserRequest.setCommission(getValidatedInt("Comisión", spinner_commission.getSelectedItem().toString()));
+                        registerUserRequest.setGroup(getValidatedInt("Grupo", txt_group.getText().toString()));
+                    } catch (Exception e) {
+                        setErrorMessage(e.getMessage());
+                        break;
+                    }
 
                     presenter.onRegisterButtonClick(getApplicationContext(), registerUserRequest);
 
@@ -82,9 +98,51 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
         }
     };
 
+    public int getValidatedInt(String field, String strNumber) throws Exception {
+        try {
+            int number = Integer.valueOf(strNumber);
+            return number;
+        } catch (NumberFormatException e) {
+            throw new Exception("El field " + field + " debe contener números.");
+        }
+    }
+
+    public String getValidatedString(String field, String str, int minLength) throws Exception {
+        if (str.isEmpty())
+            throw new Exception("El field " + field + " no puede estar vacío.");
+        if (str.length() < minLength)
+            throw new Exception(field + " debe tener más de " + String.valueOf(minLength-1) + " caracteres.");
+        return str;
+    }
+
+    public String getValidatedEmail(String str) throws Exception {
+        if (str.isEmpty())
+            throw new Exception("El field email no puede estar vacío.");
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(str);
+        if (matcher.find())
+            return str;
+        else
+            throw new Exception("El field email tiene un formato incorrecto.");
+    }
+
+    // this event will enable the back
+    // function to the button on press
     @Override
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void setErrorMessage(String message) {
+        TextView loginError = findViewById(R.id.register_error_text);
+        loginError.setText(message);
     }
 
     @Override
