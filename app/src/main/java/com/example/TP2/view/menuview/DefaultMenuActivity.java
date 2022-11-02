@@ -1,4 +1,4 @@
-package com.example.TP2.view.userhistoryview.menuview;
+package com.example.TP2.view.menuview;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -83,20 +83,14 @@ public class DefaultMenuActivity extends AppCompatActivity implements MenuActivi
     }
 
     public void setLoginView() {
-        //se genera un Intent para poder lanzar la activity principal
         Intent intent = new Intent(this, DefaultLoginActivity.class);
-
-        //se inicia la activity principal
         startActivity(intent);
 
         finish();
     }
 
     public void setUserHistoryView() {
-        //se genera un Intent para poder lanzar la activity principal
         Intent intent = new Intent(this, DefaultUserHistoryActivity.class);
-
-        //se inicia la activity principal
         startActivity(intent);
 
         finish();
@@ -104,10 +98,7 @@ public class DefaultMenuActivity extends AppCompatActivity implements MenuActivi
 
     @Override
     public void setDollarView() {
-        //se genera un Intent para poder lanzar la activity principal
         Intent intent = new Intent(this, DefaultDollarActivity.class);
-
-        //se inicia la activity principal
         startActivity(intent);
 
         finish();

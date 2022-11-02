@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.TP2.R;
 import com.example.TP2.presenter.userhistorypresenter.DefaultUserHistoryPresenter;
 import com.example.TP2.presenter.userhistorypresenter.UserHistoryPresenter;
-import com.example.TP2.view.userhistoryview.menuview.DefaultMenuActivity;
+import com.example.TP2.view.menuview.DefaultMenuActivity;
 
 public class DefaultUserHistoryActivity extends AppCompatActivity implements UserHistoryActivity {
     private static final String TAG = "UserHistoryActivity";

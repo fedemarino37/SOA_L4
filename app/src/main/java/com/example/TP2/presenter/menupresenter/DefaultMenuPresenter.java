@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.TP2.model.mainmodel.DefaultMainModel;
 import com.example.TP2.model.mainmodel.MainModel;
-import com.example.TP2.view.userhistoryview.menuview.MenuActivity;
+import com.example.TP2.view.menuview.MenuActivity;
 
 public class DefaultMenuPresenter implements MainModel.OnSendToPresenter, MenuPresenter {
 

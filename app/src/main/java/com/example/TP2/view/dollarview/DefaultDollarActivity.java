@@ -24,7 +24,7 @@ import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
 import com.example.TP2.sensors.ShakeDetector;
-import com.example.TP2.view.userhistoryview.menuview.DefaultMenuActivity;
+import com.example.TP2.view.menuview.DefaultMenuActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
