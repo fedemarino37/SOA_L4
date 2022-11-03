@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.TP2.BuildConfig;
 import com.example.TP2.R;
 import com.example.TP2.entity.RegisterUserRequest;
 import com.example.TP2.presenter.registerpresenter.DefaultRegisterPresenter;
@@ -29,7 +30,6 @@ import java.util.regex.Pattern;
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
     private static final String TAG = "RegisterActivity";
     private static final String[] COMMISSIONS = {"1900", "3900"};
-    private static final String ENVIRONMENT = "PROD";
 
     private final RegisterPresenter presenter;
 
@@ -86,7 +86,7 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
                     }
 
                     RegisterUserRequest registerUserRequest = new RegisterUserRequest();
-                    registerUserRequest.setEnvironment(ENVIRONMENT);
+                    registerUserRequest.setEnvironment(BuildConfig.ENVIRONMENT);
                     registerUserRequest.setName(txt_name.getText().toString());
                     registerUserRequest.setLastName(txt_lastname.getText().toString());
                     registerUserRequest.setDni(Integer.parseInt(txt_dni.getText().toString()));

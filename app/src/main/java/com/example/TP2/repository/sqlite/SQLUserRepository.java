@@ -12,7 +12,6 @@ public interface SQLUserRepository {
     SQLUserEntity getUserData(Context ctx, String userEmail);
     void saveUserHistory(Context ctx, SQLUserEntity user);
     void insertNewUser(Context ctx, SQLUserEntity newUser);
-    public List<SQLUserEntity> getUsersTable (Context ctx);
-
+    List<SQLUserEntity> getUsersTable (Context ctx);
     void deleteTables(Context ctx);
 }

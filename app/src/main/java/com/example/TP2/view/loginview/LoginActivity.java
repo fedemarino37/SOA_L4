@@ -10,6 +10,4 @@ public interface LoginActivity {
     void hideLoading();
 
     void requestRegister(String email);
-
-    void setErrorMessage(String message);
 }

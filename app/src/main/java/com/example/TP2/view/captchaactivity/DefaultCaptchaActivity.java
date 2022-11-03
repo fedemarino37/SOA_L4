@@ -1,7 +1,6 @@
 package com.example.TP2.view.captchaactivity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,8 +21,6 @@ public class DefaultCaptchaActivity extends AppCompatActivity implements Captcha
     private static final String TAG = "CaptchaActivity";
 
     private final CaptchaPresenter presenter;
-
-    private AlertDialog.Builder builder;
 
     public DefaultCaptchaActivity() {
         this.presenter = new DefaultCaptchaPresenter(this);
@@ -74,7 +71,4 @@ public class DefaultCaptchaActivity extends AppCompatActivity implements Captcha
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
-    @SuppressLint("Range")
-    @Override
-    public void setString(String string) {}
 }

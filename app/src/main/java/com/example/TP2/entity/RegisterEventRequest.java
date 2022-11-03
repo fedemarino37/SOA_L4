@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterEventRequest extends BaseEntityRequest {
 
-    @SerializedName("environment")
+    @SerializedName("env")
     private String environment;
 
     @SerializedName("type_events")

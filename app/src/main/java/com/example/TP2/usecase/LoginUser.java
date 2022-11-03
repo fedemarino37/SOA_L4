@@ -19,14 +19,16 @@ import io.reactivex.Observable;
 
 public class LoginUser {
 
-    UserRepository userRepository;
-    SharedPreferencesRepository sharedPreferencesRepository;
-    SaveUserLogin saveUserLogin;
+    private final UserRepository userRepository;
+    private final SharedPreferencesRepository sharedPreferencesRepository;
+    private final SaveUserLogin saveUserLogin;
+    private final RegisterEvent registerEvent;
 
     public LoginUser() {
         userRepository = new DefaultUserRepository();
         sharedPreferencesRepository = new DefaultSharedPreferencesRepository();
         saveUserLogin = new SaveUserLogin();
+        registerEvent = new RegisterEvent();
     }
 
     public LoginUserResponse execute(Context ctx, LoginUserRequest loginUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException, SQLUserNotFoundException {
@@ -39,6 +41,7 @@ public class LoginUser {
 
         saveUserLogin.execute(ctx, loginUserRequest.getEmail());
 
+        registerEvent.execute(ctx, "login-event", "user " + loginUserRequest.getEmail() + " logged.");
 
         return loginUserResponse;
     }

@@ -9,19 +9,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.TP2.R;
+import com.example.TP2.entity.SQLUserEntity;
 import com.example.TP2.presenter.userhistorypresenter.DefaultUserHistoryPresenter;
 import com.example.TP2.presenter.userhistorypresenter.UserHistoryPresenter;
-import com.example.TP2.view.menuview.DefaultMenuActivity;
+import com.example.TP2.view.dollarview.DefaultDollarActivity;
+
+import java.util.List;
 
 public class DefaultUserHistoryActivity extends AppCompatActivity implements UserHistoryActivity {
     private static final String TAG = "UserHistoryActivity";
@@ -39,14 +42,13 @@ public class DefaultUserHistoryActivity extends AppCompatActivity implements Use
 
         Button btn_update = findViewById(R.id.update_user_history_button);
         btn_update.setOnClickListener(btnListener);
-        ImageButton btn_menu = findViewById(R.id.menu_button);
-        btn_menu.setOnClickListener(btnListener);
 
         // Calling the action bar
         ActionBar actionBar = getSupportActionBar();
 
         // Showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         presenter.onUserHistoryListUpdate(getApplicationContext());
     }
@@ -60,30 +62,24 @@ public class DefaultUserHistoryActivity extends AppCompatActivity implements Use
                     Log.i(TAG, "Se hizo click en actualizar listado de usuarios");
                     presenter.onUserHistoryListUpdate(getApplicationContext());
                     break;
-                case R.id.menu_button:
-                    Log.i(TAG, "Se hizo click en ver menú");
-                    setMenuView();
-                    break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + view.getId());
             }
         }
     };
 
-    // this event will enable the back
-    // function to the button on press
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                setDollarView();
+                break;
         }
+        return true;
     }
 
-    public void loadUserHistoryEntityList(/*List<User> userEntityList*/) {
+    @Override
+    public void loadUserHistoryList(List<SQLUserEntity> userHistoryList) {
         /* Adds a row to the dollar table */
         TableLayout tl = (TableLayout) findViewById(R.id.user_history_table);
         tl.removeViews(1, Math.max(0, tl.getChildCount() - 1));
@@ -91,15 +87,15 @@ public class DefaultUserHistoryActivity extends AppCompatActivity implements Use
         View view = findViewById(R.id.user_history_row);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
 
-        /*for (UserEntity user: userEntityList) {
+        for (SQLUserEntity sqlUserEntity : userHistoryList) {
             TableRow tr = new TableRow(this);
             tr.setLayoutParams(layoutParams);
 
-            tr.addView(generateTextView(user.getName(), R.id.user_name_text));
-            tr.addView(generateTextView(user.getLastAccess().toString(), R.id.user_last_access_text));
+            tr.addView(generateTextView(sqlUserEntity.getName(), R.id.user_name_text));
+            tr.addView(generateTextView(sqlUserEntity.getTimeStampLastAccess(), R.id.user_last_access_text)); //TODO: review this
 
             tl.addView(tr, tl.getLayoutParams());
-        }*/
+        }
     }
 
     private TextView generateTextView(String text, int metaIdTextView) {
@@ -118,21 +114,30 @@ public class DefaultUserHistoryActivity extends AppCompatActivity implements Use
     }
 
     @Override
-    public void setMenuView() {
-        //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultMenuActivity.class);
+    public void onBackPressed() {
+        setDollarView();
+    }
 
-        //se inicia la activity principal
+    private void setDollarView() {
+        Intent intent = new Intent(this, DefaultDollarActivity.class);
         startActivity(intent);
 
         finish();
     }
 
+
     @Override
-    public void onBackPressed() {
-        setMenuView();
+    public void showLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
     }
 
-    @SuppressLint("Range")
-    public void setString(String string) {}
+    @Override
+    public void hideLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
 }
