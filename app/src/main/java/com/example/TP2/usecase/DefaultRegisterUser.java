@@ -48,7 +48,7 @@ public class DefaultRegisterUser implements RegisterUser {
         return registerUserResponse;
     }
 
-    Override
+    @Override
     public Observable<Object> executeWithObservable(Context ctx, RegisterUserRequest registerUserRequest) {
         return Observable.create(emitter -> {
             emitter.onNext(execute(ctx, registerUserRequest));

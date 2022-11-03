@@ -62,8 +62,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         // ShakeDetector initialization
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(count -> presenter.onDollarListUpdate(getApplicationContext()));
 
