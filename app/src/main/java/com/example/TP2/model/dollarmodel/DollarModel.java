@@ -10,9 +10,10 @@ public interface DollarModel {
 
     interface OnSendToPresenter {
         void setDollarList(List<DollarEntity> dollarList);
-
         void onError(String message);
+        void showUSBCableStatus(String msg);
     }
 
+    void getUSBCableStatus(int plugged);
     void getDollarList(Context ctx);
 }

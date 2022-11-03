@@ -1,6 +1,7 @@
 package com.example.TP2.model.dollarmodel;
 
 import android.content.Context;
+import android.os.BatteryManager;
 
 import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.usecase.DefaultGetDollarList;
@@ -22,6 +23,16 @@ public class DefaultDollarModel implements DollarModel {
     public DefaultDollarModel(OnSendToPresenter presenter) {
         this.getDollarList = new DefaultGetDollarList();
         this.presenter = presenter;
+    }
+
+    @Override
+    public void getUSBCableStatus(int plugged) {
+        if (plugged == BatteryManager.BATTERY_PLUGGED_AC)
+            presenter.showUSBCableStatus("AC CONECTADO!");
+        else if (plugged == BatteryManager.BATTERY_PLUGGED_USB)
+            presenter.showUSBCableStatus("USB CONECTADO!");
+        else if(plugged == 0)
+            presenter.showUSBCableStatus("CABLE DESCONECTADO!");
     }
 
     @Override

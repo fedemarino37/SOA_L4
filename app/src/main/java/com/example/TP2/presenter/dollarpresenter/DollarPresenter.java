@@ -6,4 +6,7 @@ public interface DollarPresenter {
 
     void onDollarListUpdate(Context applicationContext);
     void onTempChange(String temp);
+
+    void getUSBCableStatus(int plugged);
+    void showUSBCableStatus(String msg);
 }

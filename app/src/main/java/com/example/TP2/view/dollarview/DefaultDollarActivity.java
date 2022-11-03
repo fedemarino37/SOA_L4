@@ -1,9 +1,14 @@
 package com.example.TP2.view.dollarview;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -44,6 +49,10 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
     private TemperatureDetector mTempDetector;
     private Sensor mTemperature;
 
+    BroadcastReceiver receiver;
+    IntentFilter filter;
+
+
 
     public DefaultDollarActivity() {
         this.presenter = new DefaultDollarPresenter(this);
@@ -73,6 +82,16 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         temperatureTV = findViewById(R.id.temperature);
         mTempDetector.setOnTempChangedListener(temp -> temperatureTV.setText(temp + " °C"));
 
+        receiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+                presenter.getUSBCableStatus(plugged);
+            }
+        };
+
+        filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(receiver, filter);
+        
     }
 
     @Override

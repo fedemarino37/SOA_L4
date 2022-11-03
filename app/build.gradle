@@ -22,7 +22,7 @@ android {
         }
 
         release {
-            buildConfigField "String", "ENVIRONMENT", "PROD"
+            buildConfigField "String", "ENVIRONMENT", "\"PROD\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

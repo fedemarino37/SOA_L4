@@ -2,7 +2,7 @@ package com.example.TP2.model.captchamodel;
 
 import android.content.Context;
 
-import com.example.TP2.usecase.GetBatteryPercentage;
+import com.example.TP2.usecase.DefaultGetBatteryPercentage;
 
 public class DefaultCaptchaModel implements CaptchaModel{
 
@@ -36,7 +36,7 @@ public class DefaultCaptchaModel implements CaptchaModel{
 
     @Override
     public void getBatteryPercentage(Context ctx) {
-        GetBatteryPercentage batteryPercentage = new GetBatteryPercentage();
+        DefaultGetBatteryPercentage batteryPercentage = new DefaultGetBatteryPercentage();
         String batteryPerc = batteryPercentage.execute(ctx);
 
         presenter.showBatteryPercentage(batteryPerc);
