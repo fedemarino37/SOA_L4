@@ -24,7 +24,7 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
 
     @Override
     public void onLoginError(String message) {
-        this.loginView.setErrorMessage(message);
+        this.loginView.showToast(message);
     }
 
     @Override
@@ -46,5 +46,15 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
     public void onDestroy() {
         this.loginView = null;
         this.model = null;
+    }
+
+    @Override
+    public void saveSQLUser(Context ctx, String email, String name, String lastName) {
+        this.model.registerNewUser(ctx ,email, name, lastName);
+    }
+
+    @Override
+    public void onSQLError(String email) {
+        this.loginView.requestRegister(email);
     }
 }

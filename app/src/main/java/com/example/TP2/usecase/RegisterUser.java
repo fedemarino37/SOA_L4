@@ -20,17 +20,25 @@ public class RegisterUser {
 
     UserRepository userRepository;
     SharedPreferencesRepository sharedPreferencesRepository;
+    CreateSQLUserEntity createSQLUserEntity;
 
     public RegisterUser() {
         userRepository = new DefaultUserRepository();
         sharedPreferencesRepository = new DefaultSharedPreferencesRepository();
+        createSQLUserEntity = new CreateSQLUserEntity();
     }
 
     public RegisterUserResponse execute(Context ctx, RegisterUserRequest registerUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException {
         RegisterUserResponse registerUserResponse = userRepository.registerUser(ctx, registerUserRequest);
         sharedPreferencesRepository.saveToken(ctx, registerUserResponse.getToken());
 
+        createSQLUserEntity.execute(ctx,registerUserRequest.getName(),registerUserRequest.getLastName(),registerUserRequest.getEmail());
+
         return registerUserResponse;
+    }
+
+    public void executeCreateSQLUserEntity(Context ctx, String name, String lastName, String email) {
+        createSQLUserEntity.execute(ctx,name,lastName,email);
     }
 
     public Observable<Object> executeWithObservable(Context ctx, RegisterUserRequest registerUserRequest) {

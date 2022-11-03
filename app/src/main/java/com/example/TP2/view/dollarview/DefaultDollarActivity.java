@@ -1,22 +1,21 @@
 package com.example.TP2.view.dollarview;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,9 +24,12 @@ import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
 import com.example.TP2.sensors.ShakeDetector;
-import com.example.TP2.view.menuview.DefaultMenuActivity;
+import com.example.TP2.view.userhistoryview.DefaultUserHistoryActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class DefaultDollarActivity extends AppCompatActivity implements DollarActivity {
 
@@ -36,6 +38,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
 
     public DefaultDollarActivity() {
         this.presenter = new DefaultDollarPresenter(this);
@@ -48,8 +51,6 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
         Button btn_update = findViewById(R.id.update_dollar_button);
         btn_update.setOnClickListener(btnListener);
-        ImageButton btn_menu = findViewById(R.id.menu_button);
-        btn_menu.setOnClickListener(btnListener);
 
         presenter.onDollarListUpdate(getApplicationContext());
 
@@ -58,13 +59,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-
-            @Override
-            public void onShake(int count) {
-                presenter.onDollarListUpdate(getApplicationContext());
-            }
-        });
+        mShakeDetector.setOnShakeListener(count -> presenter.onDollarListUpdate(getApplicationContext()));
     }
 
     @Override
@@ -79,16 +74,29 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         super.onPause();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.dollar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.user_history_menu_item:
+                setUserHistoryView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private View.OnClickListener btnListener = view -> {
-        Intent intent;
         switch (view.getId()) {
             case R.id.update_dollar_button:
                 presenter.onDollarListUpdate(getApplicationContext());
-                Log.i(TAG, "Se hizo click en udpate dollar");
-                break;
-            case R.id.menu_button:
-                Log.i(TAG, "Se hizo click en ver menu");
-                setMenuView();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + view.getId());
@@ -103,6 +111,8 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         View view = findViewById(R.id.dollar_row);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         for (DollarEntity dollarEntity: dollarEntityList) {
             TableRow tr = new TableRow(this);
             tr.setLayoutParams(layoutParams);
@@ -110,7 +120,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
             tr.addView(generateTextView(dollarEntity.getType(), R.id.dollar_type_text));
             tr.addView(generateTextView(dollarEntity.getBuyValue().toString(), R.id.dollar_buy_text));
             tr.addView(generateTextView(dollarEntity.getSellValue().toString(), R.id.dollar_sell_text));
-            tr.addView(generateTextView(dollarEntity.getDateTime().toString(), R.id.dollar_date_text));
+            tr.addView(generateTextView(sdf.format(dollarEntity.getDateTime()), R.id.dollar_date_text));
 
             tl.addView(tr, tl.getLayoutParams());
         }
@@ -118,7 +128,6 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
     private TextView generateTextView(String text, int metaIdTextView) {
         /* Generates the text view object using the meta of another text view */
-
         TextView textView = new TextView(this);
         LinearLayout.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         View view = findViewById(metaIdTextView);
@@ -128,20 +137,29 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         textView.setGravity(((TextView) view).getGravity());
         textView.setText(text);
+
         return textView;
     }
 
-    public void setMenuView() {
-        //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultMenuActivity.class);
+    @Override
+    public void showLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+    }
 
-        //se inicia la activity principal
+    @Override
+    public void hideLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private void setUserHistoryView() {
+        Intent intent = new Intent(this, DefaultUserHistoryActivity.class);
         startActivity(intent);
-
         finish();
     }
 
-    @SuppressLint("Range")
-    @Override
-    public void setString(String string) {}
 }

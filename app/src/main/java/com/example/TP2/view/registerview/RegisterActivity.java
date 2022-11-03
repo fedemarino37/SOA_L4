@@ -1,7 +1,7 @@
 package com.example.TP2.view.registerview;
 
 public interface RegisterActivity {
-    void setErrorMessage(String message);
+    void showToast(String message);
 
-    void setLoginView();
+    void setDollarView();
 }

@@ -64,6 +64,7 @@ public class DefaultDollarRepository implements DollarRepository {
     public DollarEntity retrieveTouristDollar(Context ctx) throws IOException, NetworkConnectionException {
         Response response = client.get(ctx, BASE_URL + TOURIST_DOLLAR, null);
         String stringBody = response.body().string();
+        stringBody = stringBody.replace("No cotiza", "0");
 
         DollarEntity dollarEntity = dollarJsonMapper.transformToEntity(stringBody);
         dollarEntity.setType("Turista");

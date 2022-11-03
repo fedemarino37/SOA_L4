@@ -3,6 +3,7 @@ package com.example.TP2.view.registerview;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,27 +11,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.TP2.BuildConfig;
 import com.example.TP2.R;
 import com.example.TP2.entity.RegisterUserRequest;
 import com.example.TP2.presenter.registerpresenter.DefaultRegisterPresenter;
 import com.example.TP2.presenter.registerpresenter.RegisterPresenter;
 import com.example.TP2.view.dollarview.DefaultDollarActivity;
 import com.example.TP2.view.loginview.DefaultLoginActivity;
-import com.example.TP2.view.mainview.DefaultMainActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DefaultRegisterActivity extends AppCompatActivity implements RegisterActivity {
     private static final String TAG = "RegisterActivity";
-    private static final String[] COMMISSIONS = { "1900", "3900"};
-    private static final String ENVIRONMENT = "TEST";
+    private static final String[] COMMISSIONS = {"1900", "3900"};
 
     private final RegisterPresenter presenter;
 
@@ -67,30 +66,34 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.register_button:
-                    EditText txt_name = (EditText)findViewById(R.id.name_register_text);
-                    EditText txt_lastname = (EditText)findViewById(R.id.lastname_register_text);
-                    EditText txt_dni = (EditText)findViewById(R.id.dni_register_text);
-                    EditText txt_email = (EditText)findViewById(R.id.email_register_text);
-                    EditText txt_password = (EditText)findViewById(R.id.password_register_text);
-                    Spinner spinner_commission = (Spinner)findViewById(R.id.commission_spinner);
-                    EditText txt_group = (EditText)findViewById(R.id.group_register_text);
+                    EditText txt_name = (EditText) findViewById(R.id.name_register_text);
+                    EditText txt_lastname = (EditText) findViewById(R.id.lastname_register_text);
+                    EditText txt_dni = (EditText) findViewById(R.id.dni_register_text);
+                    EditText txt_email = (EditText) findViewById(R.id.email_register_text);
+                    EditText txt_password = (EditText) findViewById(R.id.password_register_text);
+                    Spinner spinner_commission = (Spinner) findViewById(R.id.commission_spinner);
+                    EditText txt_group = (EditText) findViewById(R.id.group_register_text);
                     Log.i(TAG, "Se hizo click en register");
 
+                    if (!isValidString("Nombre", txt_name, 1) ||
+                            !isValidString("Apellido", txt_lastname, 1) ||
+                            !isValidString("DNI", txt_dni, 8) ||
+                            !isValidEmail(txt_email) ||
+                            !isValidString("Contraseña", txt_password, 8) ||
+                            !isValidString("Grupo", txt_group, 1)
+                    ) {
+                        return;
+                    }
 
                     RegisterUserRequest registerUserRequest = new RegisterUserRequest();
-                    registerUserRequest.setEnvironment(ENVIRONMENT);
-                    try {
-                        registerUserRequest.setName(getValidatedString("Nombre", txt_name.getText().toString(), 1));
-                        registerUserRequest.setLastName(getValidatedString("Apellido", txt_lastname.getText().toString(), 1));
-                        registerUserRequest.setDni(getValidatedInt("DNI", txt_dni.getText().toString()));
-                        registerUserRequest.setEmail(getValidatedEmail(txt_email.getText().toString()));
-                        registerUserRequest.setPassword(getValidatedString("Contraseña", txt_password.getText().toString(), 8));
-                        registerUserRequest.setCommission(getValidatedInt("Comisión", spinner_commission.getSelectedItem().toString()));
-                        registerUserRequest.setGroup(getValidatedInt("Grupo", txt_group.getText().toString()));
-                    } catch (Exception e) {
-                        setErrorMessage(e.getMessage());
-                        break;
-                    }
+                    registerUserRequest.setEnvironment(BuildConfig.ENVIRONMENT);
+                    registerUserRequest.setName(txt_name.getText().toString());
+                    registerUserRequest.setLastName(txt_lastname.getText().toString());
+                    registerUserRequest.setDni(Integer.parseInt(txt_dni.getText().toString()));
+                    registerUserRequest.setEmail(txt_email.getText().toString());
+                    registerUserRequest.setPassword(txt_password.getText().toString());
+                    registerUserRequest.setCommission(Integer.parseInt(spinner_commission.getSelectedItem().toString()));
+                    registerUserRequest.setGroup(Integer.parseInt(txt_group.getText().toString()));
 
                     presenter.onRegisterButtonClick(getApplicationContext(), registerUserRequest);
 
@@ -101,32 +104,34 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
         }
     };
 
-    public int getValidatedInt(String field, String strNumber) throws Exception {
-        try {
-            int number = Integer.valueOf(strNumber);
-            return number;
-        } catch (NumberFormatException e) {
-            throw new Exception("El field " + field + " debe contener números.");
+    private Boolean isValidString(String field, EditText editText, int minLength) {
+        if (TextUtils.isEmpty(editText.getText())) {
+            editText.setError("El campo " + field + " no puede estar vacío.");
+            return false;
         }
+
+        if (editText.getText().length() < minLength) {
+            editText.setError("El campo " + field + "debe tener no menos de " + minLength + " caracteres.");
+            return false;
+        }
+
+        return true;
     }
 
-    public String getValidatedString(String field, String str, int minLength) throws Exception {
-        if (str.isEmpty())
-            throw new Exception("El field " + field + " no puede estar vacío.");
-        if (str.length() < minLength)
-            throw new Exception(field + " debe tener más de " + String.valueOf(minLength-1) + " caracteres.");
-        return str;
-    }
+    private Boolean isValidEmail(EditText editText) {
+        if (TextUtils.isEmpty(editText.getText())) {
+            editText.setError("El campo email no puede estar vacío.");
+            return false;
+        }
 
-    public String getValidatedEmail(String str) throws Exception {
-        if (str.isEmpty())
-            throw new Exception("El field email no puede estar vacío.");
         Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(str);
-        if (matcher.find())
-            return str;
-        else
-            throw new Exception("El field email tiene un formato incorrecto.");
+        Matcher matcher = pattern.matcher(editText.getText());
+        if (!matcher.find()) {
+            editText.setError("El campo email tiene un formato incorrecto");
+            return false;
+        }
+
+        return true;
     }
 
     // this event will enable the back
@@ -143,17 +148,13 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
     }
 
     @Override
-    public void setErrorMessage(String message) {
-        TextView loginError = findViewById(R.id.register_error_text);
-        loginError.setText(message);
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void setLoginView() {
-        //se genera un Intent para poder lanzar la activity principal
-        Intent intent = new Intent(this, DefaultLoginActivity.class);
-
-        //se inicia la activity principal
+    public void setDollarView() {
+        Intent intent = new Intent(this, DefaultDollarActivity.class);
         startActivity(intent);
 
         finish();
@@ -161,6 +162,9 @@ public class DefaultRegisterActivity extends AppCompatActivity implements Regist
 
     @Override
     public void onBackPressed() {
-        setLoginView();
+        Intent intent = new Intent(this, DefaultLoginActivity.class);
+        startActivity(intent);
+
+        finish();
     }
 }

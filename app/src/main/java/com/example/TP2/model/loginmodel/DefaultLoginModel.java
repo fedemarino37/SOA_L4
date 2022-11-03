@@ -1,11 +1,12 @@
 package com.example.TP2.model.loginmodel;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.repository.exception.HttpBadRequestErrorException;
+import com.example.TP2.repository.exception.SQLUserNotFoundException;
 import com.example.TP2.usecase.LoginUser;
+import com.example.TP2.usecase.RegisterUser;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -48,6 +49,11 @@ public class DefaultLoginModel implements LoginModel {
                             message = "Mail o Contraseña incorrectos";
                         }
 
+                        if(e.getClass() == SQLUserNotFoundException.class) {
+                            presenter.onSQLError(loginUserRequest.getEmail());
+                            return;
+                        }
+
                         presenter.onLoginError(message);
                     }
 
@@ -56,8 +62,13 @@ public class DefaultLoginModel implements LoginModel {
                         presenter.onRequestFinished();
                     }
                 });
+    }
 
-        Log.d("Test", "log after observable");
+    @Override
+    public void registerNewUser(Context ctx, String email, String name, String lastName) {
+        RegisterUser regUser = new RegisterUser();
+        regUser.executeCreateSQLUserEntity(ctx, name, lastName, email);
+        presenter.onLoginUserFinished();
     }
 
 }

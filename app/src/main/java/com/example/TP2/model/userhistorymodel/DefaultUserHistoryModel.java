@@ -1,9 +1,9 @@
-package com.example.TP2.model.dollarmodel;
+package com.example.TP2.model.userhistorymodel;
 
 import android.content.Context;
 
-import com.example.TP2.entity.DollarEntity;
-import com.example.TP2.usecase.GetDollarList;
+import com.example.TP2.entity.SQLUserEntity;
+import com.example.TP2.usecase.GetUsersHistory;
 
 import java.util.List;
 
@@ -13,20 +13,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class DefaultDollarModel implements DollarModel {
+public class DefaultUserHistoryModel implements UserHistoryModel {
 
-    private GetDollarList getDollarList;
     private final OnSendToPresenter presenter;
+    private GetUsersHistory getUsersHistory;
 
-    public DefaultDollarModel(OnSendToPresenter presenter) {
-        this.getDollarList = new GetDollarList();
+    public DefaultUserHistoryModel(OnSendToPresenter presenter) {
         this.presenter = presenter;
+        this.getUsersHistory = new GetUsersHistory();
     }
 
     @Override
-    public void getDollarList(Context ctx) {
-        Observable<Object> dollarEntity = getDollarList.executeWithObservable(ctx);
-        dollarEntity.subscribeOn(Schedulers.io())
+    public void getUserHistoryList(Context ctx) {
+        Observable<Object> userHistoryObservable = getUsersHistory.executeWithObservable(ctx);
+        userHistoryObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override
@@ -34,8 +34,8 @@ public class DefaultDollarModel implements DollarModel {
 
                     @Override
                     public void onNext(Object object) {
-                        List<DollarEntity> dollarList = (List<DollarEntity>)object;
-                        presenter.setDollarList(dollarList);
+                        List<SQLUserEntity> userHistoryList = (List<SQLUserEntity>)object;
+                        presenter.setUserHistoryList(userHistoryList);
                     }
 
                     @Override
