@@ -36,4 +36,9 @@ public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, Do
         dollarView.hideLoading();
         dollarView.showToast(message);
     }
+
+    @Override
+    public void onTempChange(String temp) {
+        dollarView.showToast(temp);
+    }
 }

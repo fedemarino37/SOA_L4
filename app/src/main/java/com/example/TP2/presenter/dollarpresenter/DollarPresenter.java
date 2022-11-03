@@ -5,4 +5,5 @@ import android.content.Context;
 public interface DollarPresenter {
 
     void onDollarListUpdate(Context applicationContext);
+    void onTempChange(String temp);
 }

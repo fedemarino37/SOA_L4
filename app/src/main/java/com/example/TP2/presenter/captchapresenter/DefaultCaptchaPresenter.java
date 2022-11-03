@@ -1,5 +1,7 @@
 package com.example.TP2.presenter.captchapresenter;
 
+import android.content.Context;
+
 import com.example.TP2.model.captchamodel.CaptchaModel;
 import com.example.TP2.model.captchamodel.DefaultCaptchaModel;
 import com.example.TP2.view.captchaactivity.CaptchaActivity;
@@ -25,6 +27,11 @@ public class DefaultCaptchaPresenter implements CaptchaModel.OnSendToPresenter, 
     }
 
     @Override
+    public void getBatteryPercentage(Context ctx) {
+        model.getBatteryPercentage(ctx);
+    }
+
+    @Override
     public void setCaptcha(int captcha) {
         captchaView.setCaptcha(captcha);
     }
@@ -37,5 +44,10 @@ public class DefaultCaptchaPresenter implements CaptchaModel.OnSendToPresenter, 
     @Override
     public void onCaptchaSuccess() {
         captchaView.setLoginView();
+    }
+
+    @Override
+    public void showBatteryPercentage(String batteryPerc) {
+        captchaView.showToast("ESTADO DE LA BATERIA: " + batteryPerc + "%");
     }
 }
