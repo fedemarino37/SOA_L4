@@ -13,8 +13,8 @@ public class GetBatteryPercentage {
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-        float batteryPct = level * 100 / (float)scale;
+        int batteryPct = level * 100 / scale;
 
-        return Float.toString(batteryPct);
+        return Integer.toString(batteryPct);
     }
 }

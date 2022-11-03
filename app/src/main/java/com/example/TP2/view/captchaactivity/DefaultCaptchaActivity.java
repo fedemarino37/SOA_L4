@@ -35,6 +35,7 @@ public class DefaultCaptchaActivity extends AppCompatActivity implements Captcha
         btn_captcha.setOnClickListener(btnListener);
 
         presenter.generateCaptcha();
+        presenter.getBatteryPercentage(getApplicationContext());
     }
 
     private View.OnClickListener btnListener = new View.OnClickListener() {
