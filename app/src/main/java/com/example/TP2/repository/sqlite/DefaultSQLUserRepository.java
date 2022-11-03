@@ -31,9 +31,7 @@ public class DefaultSQLUserRepository implements SQLUserRepository {
     private static final String SELECT_ALL_FROM_USERS_HISTORY = "SELECT * FROM usersHistory";
 
 
-    public DefaultSQLUserRepository() {
-    }
-
+    public DefaultSQLUserRepository() {}
 
     public List<SQLUserEntity> retrieveUsersHistory(Context ctx) {
         this.sql = ctx.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);

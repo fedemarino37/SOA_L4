@@ -6,7 +6,7 @@ import com.example.TP2.view.captchaactivity.CaptchaActivity;
 
 public class DefaultCaptchaPresenter implements CaptchaModel.OnSendToPresenter, CaptchaPresenter {
 
-    private CaptchaActivity captchaView;
+    private final CaptchaActivity captchaView;
     private final DefaultCaptchaModel model;
 
     public DefaultCaptchaPresenter(CaptchaActivity captchaView){
@@ -17,11 +17,6 @@ public class DefaultCaptchaPresenter implements CaptchaModel.OnSendToPresenter, 
     @Override
     public void generateCaptcha() {
         model.generateCaptcha();
-    }
-
-    @Override
-    public void onDestroy() {
-        this.captchaView = null;
     }
 
     @Override

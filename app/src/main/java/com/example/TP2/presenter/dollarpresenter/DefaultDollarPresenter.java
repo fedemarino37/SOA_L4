@@ -11,8 +11,8 @@ import java.util.List;
 
 public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, DollarPresenter {
 
-    private DollarModel model;
-    private DollarActivity dollarView;
+    private final DollarModel model;
+    private final DollarActivity dollarView;
 
     public DefaultDollarPresenter(DollarActivity dollarView) {
         this.model = new DefaultDollarModel(this);

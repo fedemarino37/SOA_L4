@@ -9,8 +9,8 @@ import com.example.TP2.view.registerview.RegisterActivity;
 
 public class DefaultRegisterPresenter implements RegisterPresenter, RegisterModel.OnSendToPresenter {
 
-    private RegisterActivity registerView;
-    private RegisterModel model;
+    private final RegisterActivity registerView;
+    private final RegisterModel model;
 
     public DefaultRegisterPresenter(RegisterActivity registerView) {
         this.registerView = registerView;
@@ -20,12 +20,6 @@ public class DefaultRegisterPresenter implements RegisterPresenter, RegisterMode
     @Override
     public void onRegisterButtonClick(Context ctx, RegisterUserRequest registerUserRequest) {
         model.registerUser(ctx, registerUserRequest);
-    }
-
-    @Override
-    public void onDestroy() {
-        this.registerView = null;
-        this.model = null;
     }
 
     @Override

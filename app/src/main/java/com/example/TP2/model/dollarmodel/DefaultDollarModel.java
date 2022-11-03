@@ -3,6 +3,7 @@ package com.example.TP2.model.dollarmodel;
 import android.content.Context;
 
 import com.example.TP2.entity.DollarEntity;
+import com.example.TP2.usecase.DefaultGetDollarList;
 import com.example.TP2.usecase.GetDollarList;
 
 import java.util.List;
@@ -15,11 +16,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DefaultDollarModel implements DollarModel {
 
-    private GetDollarList getDollarList;
+    private final GetDollarList getDollarList;
     private final OnSendToPresenter presenter;
 
     public DefaultDollarModel(OnSendToPresenter presenter) {
-        this.getDollarList = new GetDollarList();
+        this.getDollarList = new DefaultGetDollarList();
         this.presenter = presenter;
     }
 

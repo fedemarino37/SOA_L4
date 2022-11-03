@@ -8,7 +8,6 @@ public class DefaultSharedPreferencesRepository implements SharedPreferencesRepo
     private static final String PREFERENCES_NAME = "com.example.TP2";
     private static final String TOKEN_PREF = "token";
 
-
     @Override
     public String getToken(Context ctx) {
         SharedPreferences prefs = ctx.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
