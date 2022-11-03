@@ -24,6 +24,7 @@ import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
 import com.example.TP2.sensors.ShakeDetector;
+import com.example.TP2.sensors.TemperatureDetector;
 import com.example.TP2.view.userhistoryview.DefaultUserHistoryActivity;
 
 import java.text.SimpleDateFormat;
@@ -33,11 +34,15 @@ import java.util.TimeZone;
 
 public class DefaultDollarActivity extends AppCompatActivity implements DollarActivity {
 
+    private TextView temperatureTV;
     private DollarPresenter presenter;
     private static final String TAG = "DollarActivity";
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
+    private TemperatureDetector mTempDetector;
+    private Sensor mTemperature;
 
 
     public DefaultDollarActivity() {
@@ -54,23 +59,34 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
         presenter.onDollarListUpdate(getApplicationContext());
 
-        // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        // ShakeDetector initialization
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(count -> presenter.onDollarListUpdate(getApplicationContext()));
+
+        // TempDetector initialization
+        mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        mTempDetector = new TemperatureDetector();
+
+        temperatureTV = findViewById(R.id.temperature);
+        mTempDetector.setOnTempChangedListener(temp -> temperatureTV.setText(temp + " °C"));
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mTempDetector, mTemperature,	SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     public void onPause() {
         mSensorManager.unregisterListener(mShakeDetector);
+        mSensorManager.unregisterListener(mTempDetector);
         super.onPause();
     }
 

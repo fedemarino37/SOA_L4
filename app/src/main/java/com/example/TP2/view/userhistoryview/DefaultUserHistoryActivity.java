@@ -91,7 +91,7 @@ public class DefaultUserHistoryActivity extends AppCompatActivity implements Use
             TableRow tr = new TableRow(this);
             tr.setLayoutParams(layoutParams);
 
-            tr.addView(generateTextView(sqlUserEntity.getName(), R.id.user_name_text));
+            tr.addView(generateTextView(sqlUserEntity.getName() + " " + sqlUserEntity.getLastName(), R.id.user_name_text));
             tr.addView(generateTextView(sqlUserEntity.getTimeStampLastAccess(), R.id.user_last_access_text)); //TODO: review this
 
             tl.addView(tr, tl.getLayoutParams());
