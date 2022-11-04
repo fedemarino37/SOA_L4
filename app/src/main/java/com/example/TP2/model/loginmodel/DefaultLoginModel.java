@@ -8,6 +8,7 @@ import com.example.TP2.repository.exception.SQLUserNotFoundException;
 import com.example.TP2.usecase.DefaultLoginUser;
 import com.example.TP2.usecase.LoginUser;
 import com.example.TP2.usecase.DefaultRegisterUser;
+import com.example.TP2.usecase.RegisterUser;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -19,11 +20,12 @@ public class DefaultLoginModel implements LoginModel {
 
     private final LoginUser loginUser;
     private final OnSendToPresenter presenter;
-
+    private final RegisterUser regUser;
 
     public DefaultLoginModel(OnSendToPresenter presenter) {
         this.presenter = presenter;
         this.loginUser = new DefaultLoginUser();
+        this.regUser = new DefaultRegisterUser();
     }
 
     @Override
@@ -67,9 +69,7 @@ public class DefaultLoginModel implements LoginModel {
 
     @Override
     public void registerNewUser(Context ctx, String email, String name, String lastName) {
-        DefaultRegisterUser regUser = new DefaultRegisterUser();
         regUser.executeCreateSQLUserEntity(ctx, name, lastName, email);
-        presenter.onLoginUserFinished();
     }
 
 }

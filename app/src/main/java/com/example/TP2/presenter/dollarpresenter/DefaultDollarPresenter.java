@@ -47,6 +47,7 @@ public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, Do
         model.getUSBCableStatus(plugged);
     }
 
+
     public void showUSBCableStatus(String msg) {
         dollarView.showToast(msg);
     }

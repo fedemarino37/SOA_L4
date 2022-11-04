@@ -12,6 +12,7 @@ public interface DollarModel {
         void setDollarList(List<DollarEntity> dollarList);
         void onError(String message);
         void showUSBCableStatus(String msg);
+        void onTempChange(String temp);
     }
 
     void getUSBCableStatus(int plugged);

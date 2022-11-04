@@ -100,8 +100,6 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();

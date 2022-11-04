@@ -2,11 +2,13 @@ package com.example.TP2.usecase;
 
 import android.content.Context;
 
+import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.entity.RegisterUserRequest;
 import com.example.TP2.entity.RegisterUserResponse;
 import com.example.TP2.repository.exception.HttpBadRequestErrorException;
 import com.example.TP2.repository.exception.HttpUnexpectedErrorException;
 import com.example.TP2.repository.exception.NetworkConnectionException;
+import com.example.TP2.repository.exception.SQLUserNotFoundException;
 import com.example.TP2.repository.rest.DefaultUserRepository;
 import com.example.TP2.repository.rest.UserRepository;
 import com.example.TP2.repository.sharedpreferences.DefaultSharedPreferencesRepository;
@@ -22,13 +24,14 @@ public class DefaultRegisterUser implements RegisterUser {
     private final SharedPreferencesRepository sharedPreferencesRepository;
     private final CreateSQLUserEntity createSQLUserEntity;
     private final RegisterEvent registerEvent;
-
+    private final SaveUserLogin saveUserLogin;
 
     public DefaultRegisterUser() {
         this.userRepository = new DefaultUserRepository();
         this.sharedPreferencesRepository = new DefaultSharedPreferencesRepository();
         this.createSQLUserEntity = new DefaultCreateSQLUserEntity();
         this.registerEvent = new DefaultRegisterEvent();
+        this.saveUserLogin = new DefaultSaveUserLogin();
     }
 
     @Override
@@ -37,11 +40,13 @@ public class DefaultRegisterUser implements RegisterUser {
     }
 
     @Override
-    public RegisterUserResponse execute(Context ctx, RegisterUserRequest registerUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException {
+    public RegisterUserResponse execute(Context ctx, RegisterUserRequest registerUserRequest) throws NetworkConnectionException, IOException, HttpUnexpectedErrorException, HttpBadRequestErrorException, SQLUserNotFoundException {
         RegisterUserResponse registerUserResponse = userRepository.registerUser(ctx, registerUserRequest);
         sharedPreferencesRepository.saveToken(ctx, registerUserResponse.getToken());
 
         createSQLUserEntity.execute(ctx,registerUserRequest.getName(),registerUserRequest.getLastName(),registerUserRequest.getEmail());
+
+        saveUserLogin.execute(ctx,registerUserRequest.getEmail());
 
         registerEvent.execute(ctx, "register-user", "user with email " + registerUserRequest.getEmail() + " registered.");
 
