@@ -27,10 +27,8 @@ public class DefaultDollarModel implements DollarModel {
 
     @Override
     public void getUSBCableStatus(int plugged) {
-        if (plugged == BatteryManager.BATTERY_PLUGGED_AC)
-            presenter.showUSBCableStatus("AC CONECTADO!");
-        else if (plugged == BatteryManager.BATTERY_PLUGGED_USB)
-            presenter.showUSBCableStatus("USB CONECTADO!");
+        if (plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB)
+            presenter.showUSBCableStatus("CABLE CONECTADO!");
         else if(plugged == 0)
             presenter.showUSBCableStatus("CABLE DESCONECTADO!");
     }

@@ -49,8 +49,9 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
     private TemperatureDetector mTempDetector;
     private Sensor mTemperature;
 
-    BroadcastReceiver receiver;
-    IntentFilter filter;
+    private BroadcastReceiver receiver;
+    private IntentFilter filter;
+    int status;
 
 
 
@@ -82,23 +83,30 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         temperatureTV = findViewById(R.id.temperature);
         mTempDetector.setOnTempChangedListener(temp -> temperatureTV.setText(temp + " °C"));
 
+        getCurrentBatteryStatus();
         receiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-                presenter.getUSBCableStatus(plugged);
+
+                if (status != plugged) {
+                    presenter.getUSBCableStatus(plugged);
+                    getCurrentBatteryStatus();
+                }
             }
         };
 
         filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(receiver, filter);
-        
+
     }
+
+
 
     @Override
     public void onResume() {
         super.onResume();
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-        mSensorManager.registerListener(mTempDetector, mTemperature,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mTempDetector, mTemperature, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -118,7 +126,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.user_history_menu_item:
                 setUserHistoryView();
                 return true;
@@ -147,7 +155,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
-        for (DollarEntity dollarEntity: dollarEntityList) {
+        for (DollarEntity dollarEntity : dollarEntityList) {
             TableRow tr = new TableRow(this);
             tr.setLayoutParams(layoutParams);
 
@@ -196,4 +204,9 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         finish();
     }
 
+    private void getCurrentBatteryStatus() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = getApplicationContext().registerReceiver(null, ifilter);
+        status = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+    }
 }
