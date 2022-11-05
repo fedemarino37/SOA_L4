@@ -9,8 +9,8 @@ import com.example.TP2.view.loginview.LoginActivity;
 
 public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, LoginPresenter {
 
-    private LoginActivity loginView;
-    private LoginModel model;
+    private final LoginActivity loginView;
+    private final LoginModel model;
 
     public DefaultLoginPresenter(LoginActivity loginView){
         this.loginView = loginView;
@@ -40,12 +40,6 @@ public class DefaultLoginPresenter implements LoginModel.OnSendToPresenter, Logi
     @Override
     public void onLoginButtonClick(Context ctx, LoginUserRequest loginUserRequest) {
         this.model.loginUser(ctx, loginUserRequest);
-    }
-
-    @Override
-    public void onDestroy() {
-        this.loginView = null;
-        this.model = null;
     }
 
     @Override

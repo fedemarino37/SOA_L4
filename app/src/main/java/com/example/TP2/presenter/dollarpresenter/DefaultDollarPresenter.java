@@ -11,8 +11,8 @@ import java.util.List;
 
 public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, DollarPresenter {
 
-    private DollarModel model;
-    private DollarActivity dollarView;
+    private final DollarModel model;
+    private final DollarActivity dollarView;
 
     public DefaultDollarPresenter(DollarActivity dollarView) {
         this.model = new DefaultDollarModel(this);
@@ -36,4 +36,20 @@ public class DefaultDollarPresenter implements DollarModel.OnSendToPresenter, Do
         dollarView.hideLoading();
         dollarView.showToast(message);
     }
+
+    @Override
+    public void onTempChange(String temp) {
+        dollarView.showToast(temp);
+    }
+
+    @Override
+    public void getUSBCableStatus(int plugged) {
+        model.getUSBCableStatus(plugged);
+    }
+
+
+    public void showUSBCableStatus(String msg) {
+        dollarView.showToast(msg);
+    }
+
 }

@@ -1,9 +1,14 @@
 package com.example.TP2.view.dollarview;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -24,6 +29,7 @@ import com.example.TP2.entity.DollarEntity;
 import com.example.TP2.presenter.dollarpresenter.DefaultDollarPresenter;
 import com.example.TP2.presenter.dollarpresenter.DollarPresenter;
 import com.example.TP2.sensors.ShakeDetector;
+import com.example.TP2.sensors.TemperatureDetector;
 import com.example.TP2.view.userhistoryview.DefaultUserHistoryActivity;
 
 import java.text.SimpleDateFormat;
@@ -33,11 +39,20 @@ import java.util.TimeZone;
 
 public class DefaultDollarActivity extends AppCompatActivity implements DollarActivity {
 
+    private TextView temperatureTV;
     private DollarPresenter presenter;
     private static final String TAG = "DollarActivity";
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
+    private TemperatureDetector mTempDetector;
+    private Sensor mTemperature;
+
+    private BroadcastReceiver receiver;
+    private IntentFilter filter;
+    int status;
+
 
 
     public DefaultDollarActivity() {
@@ -54,23 +69,48 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
         presenter.onDollarListUpdate(getApplicationContext());
 
-        // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        // ShakeDetector initialization
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(count -> presenter.onDollarListUpdate(getApplicationContext()));
+
+        // TempDetector initialization
+        mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        mTempDetector = new TemperatureDetector();
+
+        temperatureTV = findViewById(R.id.temperature);
+        mTempDetector.setOnTempChangedListener(temp -> temperatureTV.setText(temp + " °C"));
+
+        getCurrentBatteryStatus();
+        receiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+
+                if (status != plugged) {
+                    presenter.getUSBCableStatus(plugged);
+                    getCurrentBatteryStatus();
+                }
+            }
+        };
+
+        filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(receiver, filter);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mTempDetector, mTemperature, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     public void onPause() {
         mSensorManager.unregisterListener(mShakeDetector);
+        mSensorManager.unregisterListener(mTempDetector);
         super.onPause();
     }
 
@@ -84,7 +124,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.user_history_menu_item:
                 setUserHistoryView();
                 return true;
@@ -113,7 +153,7 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
-        for (DollarEntity dollarEntity: dollarEntityList) {
+        for (DollarEntity dollarEntity : dollarEntityList) {
             TableRow tr = new TableRow(this);
             tr.setLayoutParams(layoutParams);
 
@@ -162,4 +202,9 @@ public class DefaultDollarActivity extends AppCompatActivity implements DollarAc
         finish();
     }
 
+    private void getCurrentBatteryStatus() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = getApplicationContext().registerReceiver(null, ifilter);
+        status = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+    }
 }

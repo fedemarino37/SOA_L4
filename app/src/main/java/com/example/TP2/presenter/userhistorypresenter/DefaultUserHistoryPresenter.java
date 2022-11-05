@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DefaultUserHistoryPresenter implements UserHistoryModel.OnSendToPresenter, UserHistoryPresenter {
 
-    private UserHistoryActivity userHistoryView;
+    private final UserHistoryActivity userHistoryView;
     private final UserHistoryModel model;
 
     public DefaultUserHistoryPresenter(UserHistoryActivity userHistoryView){
@@ -23,12 +23,6 @@ public class DefaultUserHistoryPresenter implements UserHistoryModel.OnSendToPre
     public void onUserHistoryListUpdate(Context ctx) {
         userHistoryView.showLoading();
         model.getUserHistoryList(ctx);
-    }
-
-
-    @Override
-    public void onDestroy() {
-        this.userHistoryView = null;
     }
 
     @Override

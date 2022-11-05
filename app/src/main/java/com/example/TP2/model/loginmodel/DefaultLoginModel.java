@@ -5,7 +5,9 @@ import android.content.Context;
 import com.example.TP2.entity.LoginUserRequest;
 import com.example.TP2.repository.exception.HttpBadRequestErrorException;
 import com.example.TP2.repository.exception.SQLUserNotFoundException;
+import com.example.TP2.usecase.DefaultLoginUser;
 import com.example.TP2.usecase.LoginUser;
+import com.example.TP2.usecase.DefaultRegisterUser;
 import com.example.TP2.usecase.RegisterUser;
 
 import io.reactivex.Observable;
@@ -16,13 +18,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DefaultLoginModel implements LoginModel {
 
-    LoginUser loginUser;
+    private final LoginUser loginUser;
     private final OnSendToPresenter presenter;
-
+    private final RegisterUser regUser;
 
     public DefaultLoginModel(OnSendToPresenter presenter) {
         this.presenter = presenter;
-        loginUser = new LoginUser();
+        this.loginUser = new DefaultLoginUser();
+        this.regUser = new DefaultRegisterUser();
     }
 
     @Override
@@ -66,9 +69,7 @@ public class DefaultLoginModel implements LoginModel {
 
     @Override
     public void registerNewUser(Context ctx, String email, String name, String lastName) {
-        RegisterUser regUser = new RegisterUser();
         regUser.executeCreateSQLUserEntity(ctx, name, lastName, email);
-        presenter.onLoginUserFinished();
     }
 
 }

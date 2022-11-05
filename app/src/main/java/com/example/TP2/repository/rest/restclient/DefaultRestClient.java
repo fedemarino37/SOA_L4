@@ -3,7 +3,6 @@ package com.example.TP2.repository.rest.restclient;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.StrictMode;
 
 import com.example.TP2.repository.exception.NetworkConnectionException;
 import com.squareup.okhttp.MediaType;
@@ -31,8 +30,8 @@ public class DefaultRestClient implements RestClient, Callable<String> {
     }
 
     private OkHttpClient createClient() {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
 
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(10000, TimeUnit.MILLISECONDS);

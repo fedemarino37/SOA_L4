@@ -3,6 +3,7 @@ package com.example.TP2.model.userhistorymodel;
 import android.content.Context;
 
 import com.example.TP2.entity.SQLUserEntity;
+import com.example.TP2.usecase.DefaultGetUsersHistory;
 import com.example.TP2.usecase.GetUsersHistory;
 
 import java.util.List;
@@ -16,11 +17,11 @@ import io.reactivex.schedulers.Schedulers;
 public class DefaultUserHistoryModel implements UserHistoryModel {
 
     private final OnSendToPresenter presenter;
-    private GetUsersHistory getUsersHistory;
+    private final GetUsersHistory getUsersHistory;
 
     public DefaultUserHistoryModel(OnSendToPresenter presenter) {
         this.presenter = presenter;
-        this.getUsersHistory = new GetUsersHistory();
+        this.getUsersHistory = new DefaultGetUsersHistory();
     }
 
     @Override

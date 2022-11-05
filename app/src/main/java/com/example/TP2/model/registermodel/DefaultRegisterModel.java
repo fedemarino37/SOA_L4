@@ -3,7 +3,7 @@ package com.example.TP2.model.registermodel;
 import android.content.Context;
 
 import com.example.TP2.entity.RegisterUserRequest;
-import com.example.TP2.repository.exception.HttpBadRequestErrorException;
+import com.example.TP2.usecase.DefaultRegisterUser;
 import com.example.TP2.usecase.RegisterUser;
 
 import io.reactivex.Observable;
@@ -14,12 +14,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DefaultRegisterModel implements RegisterModel {
 
-    RegisterUser registerUser;
+    private final RegisterUser registerUser;
     private final OnSendToPresenter presenter;
 
     public DefaultRegisterModel(OnSendToPresenter presenter) {
         this.presenter = presenter;
-        this.registerUser = new RegisterUser();
+        this.registerUser = new DefaultRegisterUser();
     }
 
     @Override

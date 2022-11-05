@@ -4,7 +4,16 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.ambient_temperature"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +35,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".view.loginview.DefaultLoginActivity"
@@ -33,15 +43,20 @@
         <activity
             android:name=".view.registerview.DefaultRegisterActivity"
             android:exported="false" />
+
         <activity
             android:name=".view.dollarview.DefaultDollarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.menuview.DefaultMenuActivity"
-            android:exported="false"/>
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+
+        </activity>
+
         <activity
             android:name=".view.userhistoryview.DefaultUserHistoryActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
 
     </application>

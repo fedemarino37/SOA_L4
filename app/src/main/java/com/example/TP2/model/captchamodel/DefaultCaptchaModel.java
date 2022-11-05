@@ -1,5 +1,9 @@
 package com.example.TP2.model.captchamodel;
 
+import android.content.Context;
+
+import com.example.TP2.usecase.DefaultGetBatteryPercentage;
+
 public class DefaultCaptchaModel implements CaptchaModel{
 
     private static int minValue = 100000000;
@@ -28,5 +32,13 @@ public class DefaultCaptchaModel implements CaptchaModel{
         }
 
         presenter.onCaptchaSuccess();
+    }
+
+    @Override
+    public void getBatteryPercentage(Context ctx) {
+        DefaultGetBatteryPercentage batteryPercentage = new DefaultGetBatteryPercentage();
+        String batteryPerc = batteryPercentage.execute(ctx);
+
+        presenter.showBatteryPercentage(batteryPerc);
     }
 }
